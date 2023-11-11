@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="icon" type="image/x-icon" href="./generalAssets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Patrick+Hand|Poppins:400,700" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, Arial, sans-serif;
+            background-color: #F9EFE6;
+            text-align: center;
+        }
+
+        header {
+            background-color: #9BC4B9;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo {
+            width: 80px !important;
+            height: 80px !important;
+            margin-bottom: 5px;
+        }
+
+        h1 {
+            font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+            font-size: 36px;
+            color: #F5F6AF;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin: 20px auto;
+            max-width: 1100px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        .timer-container {
+            display: flex;
+            align-items: center;
+            background-color: #F9EFE6;
+            color: #000000;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+        }
+
+        .timer {
+            font-size: 18px;
+        }
+
+        .rules-button {
+            background-color: #9BC4B9;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .rules-button:hover {
+            background-color: #F5F6AF;
+            color: #000000;
+        }
+
+        .panel-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .panel {
+            flex: 1;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        h2 {
+			font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+            font-size: 24px;
+            color: #9BC4B9;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px;
+            padding: 10px;
+            background-color: #F9EFE6;
+            cursor: pointer;
+            border: 2px solid #F9EFE6;
+            border-radius: 5px;
+        }
+
+        li.correct {
+            background-color: #9BC4B9;
+            color: #fff;
+        }
+
+
+
+        li.incorrect {
+            background-color: #F9EFE6;
+            color: #fff;
+        }
+
+        .arrow {
+            position: absolute;
+            pointer-events: none;
+            border-left: 2px dashed #1a535c;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .modal-content {
+            background-color: #F9EFE6;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 80%;
+        }
+
+        .modal h3 {
+            font-size: 24px;
+            color: #000000;
+        }
+
+        .modal p {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .modal-button {
+            background-color: #9BC4B9;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .modal-button:hover {
+            background-color: #F5F6AF;
+            color: #000000;
+        }
+		
+		/* Add this CSS for hover effect on left sentences */
+		#left-sentences li:active {
+			background-color: #F5F6AF; /* Change to the desired hover color */
+			color: #000000;
+		}
+
+		/* Add this CSS for hover effect on right sentences */
+		#right-sentences li:active {
+			background-color: #F5F6AF; /* Change to the desired hover color */
+			color: #000000;
+		}
+		
+		/* Add a new CSS class for selected sentences */
+		li.selected {
+			background-color: #F5F6AF; /* Change to your desired selected color */
+			color: #000; /* Change the text color for better visibility */
+		}
+		
+		/* When the screen width is 768px or less */
+		@media (max-width: 768px) {
+			body {
+				font-size: 14px; /* Decrease font size for smaller screens */
+			}
+
+			.container {
+				flex-direction: column; /* Stack panels vertically */
+				align-items: center; /* Center the content */
+			}
+
+			.timer-container {
+				margin: 10px 0; /* Add some spacing to the timer container */
+			}
+
+			.timer {
+				font-size: 16px; /* Decrease font size for timer */
+			}
+
+			.rules-button {
+				margin: 10px 0; /* Add some spacing to the rules button */
+			}
+
+			.panel {
+				width: 100%; /* Full width for panels */
+				margin: 10px 0; /* Add some spacing between panels */
+				padding: 10px; /* Add padding to the panels */
+			}
+
+			.modal-content {
+				max-width: 90%; /* Adjust modal width for smaller screens */
+			}
+
+			.modal h3 {
+				font-size: 20px; /* Decrease modal heading font size */
+			}
+
+			.modal p {
+				font-size: 14px; /* Decrease modal paragraph font size */
+			}
+		}
+
+		/* Add this CSS for styling the pairing container and individual pairings */
+		.pairing-container {
+			display: none; /* Initially hidden */
+			margin: 20px auto;
+			max-width: 1100px;
+			background-color: #fff;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+			padding: 20px;
+		}
+
+		.pairing {
+			font-size: 18px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: #F5F6AF;
+			color: #000000;
+			margin: 10px;
+			padding: 10px;
+			border-radius: 5px;
+		}
+
+
+    </style>
+    <title>Δάφνη: Παιχνίδι Αντιστοίχισης</title>
+</head>
+<body>
+    <header>
+        <img class="logo" src="./generalAssets/small_logo_yellow_black.png" alt="DigiFlora Logo" />
+        <h1>Παιχνίδι Αντιστοίχισης</h1>
+    </header>
+    <div class="container">
+        <div class="timer-container">
+            <div class="timer" id="timer">Υπολειπόμενος Χρόνος: 2:00</div>
+        </div>
+        <div class="panel-container">
+            <div class="panel">
+                
+                <ul id="left-sentences">
+                    <li data-id="1">«Δρέπω δάφνες» σημαίνει</li>
+                    <li data-id="2">Το δαφνέλαιο που παράγεται από τους καρπούς της δάφνης</li>
+                    <li data-id="3">Φύλλα δάφνης χρησιμοποιούνται</li>
+                    <li data-id="4">Οι Ρωμαίοι πίστευαν ότι τα δαφνόφυλλα</li>
+                    <li data-id="5">Η δάφνη χρησιμοποιείται στις μεγάλες θρησκευτικές γιορτές</li>
+                    <li data-id="6">«Επαναπαύομαι στις δάφνες μου» σημαίνει</li>
+					<li data-id="7">Οι ιέρειες στο Μαντείο των Δελφών</li>
+                </ul>
+            </div>
+            <div class="panel">
+                
+                <ul id="right-sentences">
+                    <li data-id="1">έχω μεγάλη επιτυχία σε κάποιον τομέα.</li>
+                    <li data-id="2">χρησιμοποιείται για την παρασκευή εντομοκτόνων και παρασιτοκτόνων και ως συστατικό σε αρώματα, κεριά και σαπούνια.</li>
+                    <li data-id="3">στη μαγειρική και στη συσκευασία ξηρών καρπών όπως σύκα και σταφίδες.</li>
+                    <li data-id="4">προστάτευαν από τους κεραυνούς και από την πανούκλα.</li>
+                    <li data-id="5">όπως στην γιορτή των Βαΐων για διακόσμηση αντί κλάδων φοίνικα.</li>
+                    <li data-id="6">αρκούμαι σ΄ αυτά που έχω ήδη πετύχει.</li>
+					<li data-id="7">μασούσαν φύλλα δάφνης όταν έδιναν τους χρησμούς τους.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="rules-button" onclick="toggleRules()">Κανόνες</div>
+    </div>
+	<!-- Add this HTML structure below the panels -->
+	<div class="pairing-container hidden" id="pairing-container">
+		<h2>Σωστές Αντιστοιχίσεις</h2>
+	  <!-- Pairing sentences will be added here -->
+	</div>
+    <div class="modal" id="success-modal">
+    <div class="modal-content">
+        <h3>Συγχαρητήρια!</h3>
+        <p>Αντιστοιχίσατε όλες τις προτάσεις σωστά!</p>
+        <button class="modal-button" onclick="playAgain()">Παίξτε ξανά</button>
+        <button class="modal-button" onclick="window.location.href='dafni6.html';">Επόμενο...</button>
+    </div>
+</div>
+<div class="modal" id="rules-modal">
+    <div class="modal-content">
+        <h2>Για να βρεις τι σημαίνουν οι εκφράσεις αρκεί να κάνεις τις σωστές αντιστοιχίσεις.</h2>
+		<h3>Κανόνες Παιχνιδιού</h3>
+        <p>1. Επιλέξτε μία πρόταση στο πρώτο πάνελ και μετά επιλέξτε μία πρόταση στο δεύτερο πάνελ (ή και αντίστροφα).<br>
+        2. Όταν μια πρόταση επιλεχθεί, θα αλλάξει χρώμα.<br>
+		3. Όταν δύο προτάσεις αντιστοιχιστούν σωστά, τότε θα αλλάξουν και οι δύο χρώμα.<br>
+        4. Αν ταιριάξετε σωστά όλες τις προτάσεις μέσα σε 2 λεπτά, κερδίζετε!<br>
+        5. Να προσέχετε όμως τον χρόνο σας... Αν μηδενιστεί το χρονόμετρο, τότε χάνετε.</p>
+		<p>Όλες οι σωστές αντιστοιχίσεις εμφανίζονται στο κάτω μέρος της οθόνης σας.</p>
+		<p>Καλή επιτυχία!</p>
+        <button class="modal-button" onclick="toggleRules()">Συνέχεια</button>
+    </div>
+</div>
+<div class="modal" id="failure-modal">
+    <div class="modal-content">
+        <h3>Τέλος Χρόνου!</h3>
+        <p>Σας τελείωσε ο χρόνος. Θέλετε να δοκιμάσετε ξανά;</p>
+        <button class="modal-button" onclick="playAgain()">Παίξτε ξανά</button>
+    </div>
+</div>
+
+    <script>
+        const leftSentences = document.querySelectorAll('#left-sentences li');
+        const rightSentences = document.querySelectorAll('#right-sentences li');
+        const container = document.querySelector('.container');
+        const timerElement = document.getElementById('timer');
+        const successModal = document.getElementById('success-modal');
+        const rulesModal = document.getElementById('rules-modal');
+        const failureModal = document.getElementById('failure-modal');
+        const rulesButton = document.querySelector('.rules-button');
+
+        let timeLeft = 120;
+        let timerInterval = null;
+        let gameOver = false;
+
+        let isTimerPaused = false;
+		
+		// Show the pairing container
+const pairingContainer = document.getElementById('pairing-container');
+pairingContainer.style.display = 'block';
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = `Υπολειπόμενος Χρόνος: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (!gameOver && !isTimerPaused) {
+                    timeLeft--;
+                    updateTimer();
+
+                    if (timeLeft === 0) {
+                        clearInterval(timerInterval);
+                        failureModal.style.display = 'flex';
+                        gameOver = true;
+                    }
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function resumeTimer() {
+            startTimer();
+        }
+
+        function toggleRules() {
+            if (rulesModal.style.display === 'none') {
+                rulesModal.style.display = 'flex';
+                isTimerPaused = true;
+            } else {
+                rulesModal.style.display = 'none';
+                if (!gameOver) {
+                    isTimerPaused = false;
+                }
+            }
+        }
+
+        leftSentences.forEach((sentence) => {
+            sentence.addEventListener('click', selectSentence);
+        });
+
+        rightSentences.forEach((sentence) => {
+            sentence.addEventListener('click', selectSentence);
+        });
+
+        let selectedLeft = null;
+let selectedRight = null;
+
+function selectSentence(event) {
+    if (gameOver) {
+        return;
+    }
+
+    const element = event.target;
+
+    if (!element.classList.contains('correct')) {
+        if (!selectedLeft) {
+            if (selectedRight) {
+                // Clear selection from the previous right sentence if any
+                selectedRight.classList.remove('selected');
+            }
+            selectedLeft = element;
+            element.classList.add('selected');
+            // Enable right sentences when a left sentence is selected
+            document.getElementById('right-sentences').classList.remove('disabled');
+        } else {
+            if (selectedLeft === element) {
+                // Clicked on the already selected left sentence, deselect it
+                selectedLeft.classList.remove('selected');
+                selectedLeft = null;
+            } else {
+                if (selectedRight) {
+                    // Clear selection from the previous right sentence
+                    selectedRight.classList.remove('selected');
+                }
+                selectedRight = element;
+                const leftId = selectedLeft.getAttribute('data-id');
+                const rightId = selectedRight.getAttribute('data-id');
+
+                // Inside the selectSentence function, when a correct pairing is found
+if (leftId === rightId) {
+    selectedLeft.classList.add('correct');
+    selectedRight.classList.add('correct');
+
+    // Create a new pairing element
+    const pairingContainer = document.getElementById('pairing-container');
+    const pairingElement = document.createElement('div');
+    pairingElement.classList.add('pairing');
+
+    // Set the content of the pairing element
+    pairingElement.textContent = `${selectedLeft.textContent} → ${selectedRight.textContent}`;
+
+    // Append the pairing to the pairing container
+    pairingContainer.appendChild(pairingElement);
+
+    selectedLeft.classList.remove('selected');
+    selectedRight.classList.remove('selected');
+    selectedLeft = null;
+    selectedRight = null;
+
+    const allMatched = Array.from(rightSentences).every((rightSentence) =>
+        rightSentence.classList.contains('correct')
+    );
+
+    if (allMatched) {
+        clearInterval(timerInterval);
+        successModal.style.display = 'flex';
+        gameOver = true;
+    }
+	
+	
+} else {
+                    // If the selected pair doesn't match, show it for a moment and then hide it.
+                    setTimeout(() => {
+                        selectedLeft.classList.remove('selected');
+                        selectedRight.classList.remove('selected');
+                        selectedLeft = null;
+                        selectedRight = null;
+                    }, 100);
+                }
+                // Disable right sentences again after an attempt
+                document.getElementById('right-sentences').classList.add('disabled');
+            }
+        }
+    }
+}
+
+
+        function playAgain() {
+            location.reload();
+        }
+        
+        // Shuffle function to shuffle both left and right sentences
+        function shuffleSentences() {
+            // Shuffle left sentences
+            for (let i = leftSentences.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [leftSentences[i].textContent, leftSentences[j].textContent] = [leftSentences[j].textContent, leftSentences[i].textContent];
+                // Maintain the association by updating data-id
+                [leftSentences[i].dataset.id, leftSentences[j].dataset.id] = [leftSentences[j].dataset.id, leftSentences[i].dataset.id];
+            }
+
+            // Shuffle right sentences
+            for (let i = rightSentences.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [rightSentences[i].textContent, rightSentences[j].textContent] = [rightSentences[j].textContent, rightSentences[i].textContent];
+                // Maintain the association by updating data-id
+                [rightSentences[i].dataset.id, rightSentences[j].dataset.id] = [rightSentences[j].dataset.id, rightSentences[i].dataset.id];
+            }
+        }
+
+        // Call the shuffle function to randomize sentences when the page loads
+        shuffleSentences();
+
+        // Initialize the timer
+        updateTimer();
+        startTimer();
+
+        // Display the rules modal initially
+        toggleRules();
+		
+		
+    </script>
+</body>
+</html>

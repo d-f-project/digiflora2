@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="icon" type="image/x-icon" href="./generalAssets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Patrick+Hand|Poppins:400,700" rel="stylesheet">
+    <title>Ελιά: Επιλέξτε τη σωστή απάντηση</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, Arial, sans-serif;
+            text-align: center;
+            background-color: #F9EFE6; /* Light green background color */
+            margin: 0;
+            padding: 0;
+        }
+		
+		header {
+		background-color: #9BC4B9; /* Green header background */
+		padding: 5px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		}
+
+		.logo {
+			width: 80px !important;;
+			height: 80px !important;; /* Add a height to maintain the aspect ratio */
+			margin-bottom: 5px;
+		}
+
+		h1 {
+			font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+			font-size: 36px;
+			color: #F5F6AF; /* Yellow heading text color */
+		}
+		
+		h2 {
+			font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+            font-size: 18px;
+            color: #9BC4B9;
+        }
+		
+        #gameContainer {
+            background-color: #fff; /* White background color */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333; /* Dark gray text color */
+        }
+        label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 2px solid #3d7a3d; /* Dark green border */
+            padding: 10px;
+            border-radius: 5px;
+        }
+        input[type="radio"] {
+            display: none; /* Hide the default radio button */
+        }
+        .sentence {
+            background-color: #E1E5EA; /* Gray sentence background color */
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            border: 2px solid transparent; /* Transparent border initially */
+            border-radius: 5px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .selected {
+            background-color: #F5F6AF !important; /* Playful yellow when selected */
+            border-color: #F5F6AF !important; /* Yellow border when selected */
+        }
+        .correct {
+            background-color: #4caf50; /* Green for correct answer */
+            color: #fff; /* White text color for correct answer */
+            border-color: #3d7a3d; /* Dark green border for correct answer */
+        }
+        .incorrect {
+            background-color: #f44336; /* Red for incorrect answer */
+            color: #fff; /* White text color for incorrect answer */
+            border-color: #f44336; /* Red border for incorrect answer */
+        }
+        button {
+            background-color: #9BC4B9; /* Green button background color */
+            color: #fff; /* White text color */
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #F5F6AF; /* Yellow on hover */
+			color: black;
+        }
+        #resultMessage {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #3d7a3d; /* Dark green result message color */
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: #F9EFE6;
+            border-radius: 5px;
+            text-align: center;
+            padding: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .modal button {
+            background-color: #9BC4B9;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+		
+		.modal button:hover {
+			background-color: #F5F6AF;
+            color: #000000;
+		}
+		
+		#modalMessageSuccess {
+			color: #2c5d2c;
+		}
+		
+		#modalMessageFail {
+			color: #f44336;
+		}
+		
+		.image {
+			width: 120px !important;;
+			margin-bottom: 5px;
+			box-shadow: 10px 10px 5px #ccc;
+		}
+    </style>
+</head>
+
+<body>
+	<header>
+		<img class="logo" src="./generalAssets/small_logo_yellow_black.png" alt="DigiFlora Logo" /> <!-- Add your logo path -->
+
+		<h1>Επιλέξτε τη σωστή απάντηση</h1>
+	</header>
+    <div id="gameContainer">
+		<p>Το 2004 οι Ολυμπιακοί Αγώνες έγιναν στην Αθήνα.<br>
+		Δες το σήμα αυτών των Αγώνων που επέλεξαν οι διοργανωτές.  
+		<p>
+		<br>
+		<figure>
+			<img class="image" src="./assets/images/olympiakoi_agones.jpg" alt="Στεφάνι Ελιάς" style="width:100%">
+		</figure>
+		<br>
+		<h2>Τι σου θυμίζει;</h2>
+        <form id="multipleChoiceForm">			
+            <label class="sentence" onclick="selectOption(this)">
+                <input type="radio" name="answer" value="1"> Στεφάνι από ελιά
+            </label>
+            <label class="sentence" onclick="selectOption(this)">
+                <input type="radio" name="answer" value="2"> Στεφάνη από δάφνη
+            </label>
+            <label class="sentence" onclick="selectOption(this)">
+                <input type="radio" name="answer" value="3"> Στεφάνι από πουρνάρι
+            </label>
+            <label class="sentence" onclick="selectOption(this)">
+                <input type="radio" name="answer" value="4"> Στεφάνι από λυγαριά
+            </label> 
+        </form>
+		</br>
+		<form>
+		<button type="button" onclick="checkAnswer()">Υποβολή</button><br><br>
+		<button id="modalRestartButton" onclick="restartGame()">Ανακάτεμα Προτάσεων</button>
+		<button type="button" id="revealSolutionButton" onclick="revealSolution()">Εμφάνιση Λύσης</button>
+		</form>
+
+        <p id="resultMessage"></p>
+    </div>
+
+    <!-- Modal dialog -->
+    <div class="modal" id="myModalSuccess">
+        <div class="modal-content">
+            <p id="modalMessageSuccess"></p>
+            <button id="modalRestartButton" onclick="restartGame()">Παίξτε ξανά</button>
+            <button id="modalContinueButton" onclick="window.location.href='elia5.html';">Επόμενο...</button>
+        </div>
+    </div>
+	
+	<!-- Modal dialog -->
+    <div class="modal" id="myModalFail">
+        <div class="modal-content">
+            <p id="modalMessageFail"></p>
+            <button id="modalRestartButton" onclick="restartGame()">Δοκιμάστε ξανά</button>
+        </div>
+    </div>
+	
+	<!-- Modal dialog -->
+    <div class="modal" id="myModal">
+        <div class="modal-content">
+            <p id="modalMessage">
+</p>
+            <button id="modalRestartButton" onclick="closeModal()">Συνέχεια</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedOption = null;
+        let sentencesArray = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function initializeSentences() {
+            const sentenceLabels = document.querySelectorAll('.sentence');
+            sentenceLabels.forEach((label, index) => {
+                sentencesArray[index] = label;
+            });
+            shuffleArray(sentencesArray);
+            sentencesArray.forEach((label, index) => {
+                document.getElementById('multipleChoiceForm').appendChild(label);
+            });
+        }
+
+        window.onload = initializeSentences;
+
+        function selectOption(option) {
+            if (selectedOption) {
+                selectedOption.classList.remove('selected');
+            }
+            option.classList.add('selected');
+            selectedOption = option;
+        }
+
+        function checkAnswer() {
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (selectedAnswer) {
+                const answerValue = selectedAnswer.value;
+                const sentences = document.querySelectorAll('.sentence');
+                sentences.forEach(sentence => {
+                    sentence.classList.remove('correct', 'incorrect', 'selected');
+                });
+
+                if (answerValue === '1') {
+                    showModalSuccess('ΣΩΣΤΑ!');
+                    selectedAnswer.parentElement.classList.add('correct');
+                } else {
+                    showModalFail('Λυπούμαστε, αυτό είναι λάθος. Προσπαθησε ξανα.');
+                    selectedAnswer.parentElement.classList.add('incorrect');
+                }
+                selectedOption.classList.remove('selected'); // Remove yellow background
+                disableSentenceSelection(true);
+            } else {
+                showModal('Παρακαλώ επιλέξτε μία απάντηση.');
+            }
+        }
+
+        function restartGame() {
+            const sentences = document.querySelectorAll('.sentence');
+            sentences.forEach(sentence => {
+                sentence.classList.remove('correct', 'incorrect', 'selected');
+            });
+            document.querySelector('input[name="answer"]:checked').checked = false;
+            shuffleArray(sentencesArray);
+            sentencesArray.forEach((label, index) => {
+                document.getElementById('multipleChoiceForm').appendChild(label);
+            });
+            closeModal();
+            disableSentenceSelection(false);
+        }
+
+        function disableSentenceSelection(disabled) {
+            const sentences = document.querySelectorAll('.sentence input[type="radio"]');
+            sentences.forEach(sentence => {
+                sentence.disabled = disabled;
+            });
+        }
+		
+		function showModal(message) {
+            const modal = document.getElementById('myModal');
+            const modalMessage = document.getElementById('modalMessage');
+            modalMessage.textContent = message;
+            modal.style.display = 'block';
+        }
+
+        function showModalSuccess(message) {
+            const modal = document.getElementById('myModalSuccess');
+            const modalMessage = document.getElementById('modalMessageSuccess');
+            modalMessage.textContent = message;
+            modal.style.display = 'block';
+        }
+		
+		function showModalFail(message) {
+            const modal = document.getElementById('myModalFail');
+            const modalMessage = document.getElementById('modalMessageFail');
+            modalMessage.textContent = message;
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            const modalSuccess = document.getElementById('myModalSuccess');
+            modalSuccess.style.display = 'none';
+			const modalFail = document.getElementById('myModalFail');
+			modalFail.style.display = 'none';
+			const modal = document.getElementById('myModal');
+			modal.style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            const modal = document.getElementById('myModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        };
+		
+		// Add an event listener for the "Λύση" button
+		document.querySelector('#revealSolutionButton').addEventListener('click', revealSolution);
+
+		
+		// Function to reveal the solution
+		function revealSolution() {
+			// You can add code here to highlight the correct answer
+			// For example, you can add a class to the correct answer
+			const correctAnswer = document.querySelector('input[value="1"]').parentElement;
+			correctAnswer.classList.add('correct');
+					
+			// Disable or hide the "Check Answer" button
+			const checkAnswerButton = document.querySelector('button[onclick="checkAnswer()"]');
+			if (checkAnswerButton) {
+				// Option 1: Disable the button
+				//checkAnswerButton.disabled = true;
+
+				// Option 2: Hide the button
+				 checkAnswerButton.style.display = 'none';
+			}
+		}
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Η ελιά στον κινηματογράφο</title>
+    <link rel="icon" type="image/x-icon" href="./generalAssets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Patrick+Hand|Poppins:400,700" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+            text-align: center;
+            background-color: #9BC4B9; /* Light green background */
+        }
+
+        header {
+			background-color: #9BC4B9; /* Green header background */
+			padding: 20px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.logo {
+			width: 80px !important;;
+			height: 80px !important;; /* Add a height to maintain the aspect ratio */
+			margin-bottom: 5px;
+		}
+
+		h1 {
+			font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+			font-size: 36px;
+			color: #F5F6AF; /* Yellow heading text color */
+		}
+
+        #container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+		
+		#container-2 {
+            background-color: #F9EFE6;
+			padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            font-size: 20px;
+            color: #333;
+        }
+
+        button {
+            background-color: #9BC4B9; /* Yellow button background */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #F5F6AF; /* Yellow on hover */
+			color: black;
+        }
+		
+	.lightbox {
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.7);
+		z-index: 1;
+	  }
+
+	  .lightbox-content {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: #fff;
+		padding: 20px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		text-align: center; /* Center the content */
+	  }
+
+	  #video-frame {
+		width: 700px;
+		height: 315px; /* Set the desired height for the video */
+	  }
+
+	  .close-button {
+		display: block;
+		margin-top: 10px; /* Add space between video and close button */
+		font-size: 16px; /* Adjust the font size as needed */
+		cursor: pointer;
+		background-color: #9BC4B9;
+		color: #fff;
+		border: none;
+		padding: 10px 20px;
+		border-radius: 5px;
+		transition: background-color 0.3s;
+	  }
+
+	  .close-button:hover {
+		background-color: #F5F6AF; /* Darker yellow on hover */
+		color: #000000;
+	  }
+	  
+	  .youtube-button {
+		display: block;
+		margin-top: 10px; /* Add space between video and close button */
+		font-size: 16px; /* Adjust the font size as needed */
+		cursor: pointer;
+		background-color: #FF0000;
+		color: #fff;
+		border: none;
+		padding: 10px 20px;
+		border-radius: 5px;
+		transition: background-color 0.3s;
+	  }
+
+	  .youtube-button:hover {
+		background-color: #e20000; /* Darker yellow on hover */
+		color: #fff;
+	  }
+	  
+	  
+	  .next-point-button {
+            background-color: #3CA731; /* Yellow button background */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .next-point-button:hover {
+            background-color: #3d7a3d; /* Darker yellow on hover */
+			color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+		<img class="logo" src="./generalAssets/small_logo_yellow_black.png" alt="DigiFlora Logo" /> <!-- Add your logo path -->
+
+        <h1>Η ελιά στον κινηματογράφο</h1>
+    </header>
+    <div id="container">
+        <div id="container-2">
+			<h3>«Η ελιά θα είναι πάντα εδώ»</h3><br>
+			<p>			
+			"The olive tree will always be here" (στην ελληνική «Η ελιά θα είναι πάντα εδώ») είναι ο τίτλος<br>
+			μιας ταινίας μικρού μήκους για τη σημασία της ελιάς για τους Έλληνες, καθώς στην Ελλάδα<br>
+			η ελιά έχει πρωταγωνιστικό ρόλο στο τραπέζι μας, από την αρχαιότητα ακόμα, και δεν θα ήταν υπερβολή<br>
+			να πούμε ότι αυτό το δέντρο διαμόρφωσε τον πολιτισμό, τις αξίες, την ταυτότητά μας.<br>
+			Πρόκειται για μία εξαιρετική ταινία, που δημιουργήθηκε από την Indigo View, σε σκηνοθεσία Θοδωρή Παπαδουλάκη,<br>
+			για την ελληνική εταιρεία εξαγωγών προϊόντων ελιάς και ελαιολάδου GAEA. 
+        </p>
+		</div>
+		<br>
+        <button onclick="openLightbox('https://youtu.be/RTUVgI3efeE');">
+			Δες την ταινία εδώ!
+        </button><br><br>
+		<button onclick="window.location.href='elia8.html';">
+			Επόμενο...
+        </button>
+		<br>
+    </div>
+	
+	<div id="video-lightbox" class="lightbox">
+	  <div class="lightbox-content">
+		<iframe id="video-frame" width="560" height="315" src="https://www.youtube.com/embed/RTUVgI3efeE" title="The Olive Tree Will Always Be Here" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+		<button class="youtube-button" onclick="window.open('https://youtu.be/RTUVgI3efeE','_blank')">Άνοιγμα στο YouTube</button>
+		<button class="close-button" onclick="closeLightbox()">Κλείσιμο</button>
+	  </div>
+	</div>
+	
+	
+	<script>
+	  function openLightbox(videoUrl) {
+		var lightbox = document.getElementById('video-lightbox');
+		var videoFrame = document.getElementById('video-frame');
+
+		videoFrame.src = videoUrl;
+		lightbox.style.display = 'block';
+	  }
+	  
+	  function closeLightbox() {
+		var lightbox = document.getElementById('video-lightbox');
+		var videoFrame = document.getElementById('video-frame');
+
+		videoFrame.src = '';
+		lightbox.style.display = 'none';
+	  }
+	</script>
+</body>
+</html>
