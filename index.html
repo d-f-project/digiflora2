@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>DigiFlora Digital Educational Application</title>
+    <link rel="icon" type="image/x-icon" href="./generalAssets/favicon.ico" />
+
+    <style>
+        body {
+			font-family: 'Poppins', sans-serif, Arial, sans-serif;
+			text-align: center;
+			background-image: url('./generalAssets/botanic_map.jpg'); /* Replace with your image file URL */
+			background-size: contain;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-attachment: fixed; /* Optional: This keeps the background fixed while scrolling */
+			background-color: #9BC4B9; /* Fallback background color in case the image isn't available */
+			height: 100vh; /* Set the height to 100% of the viewport height */
+			width: 100%; /* Set the width to 100% of the viewport width */
+		}
+
+        #logo-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it appears above other content */
+            transition: opacity 2s ease-in-out; /* Adjust the duration as needed */
+        }
+
+        #logo-banner img {
+            max-width: 150%;
+            max-height: 150%;
+            animation: fadeOut 2s 2s forwards; /* Adjust the duration and delay as needed */
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Add this new CSS class */
+        .logo-large {
+            width: 300px; /* Adjust the width to your desired size */
+            height: 300px; /* Adjust the height to your desired size */
+        }
+    </style>
+</head>
+<body>
+    <div id="logo-banner">
+        <img src="./generalAssets/DIGIflora_logo.png" alt="DigiFlora Main Logo" class="logo logo-large" />
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Wait for the page to load
+            const logoBanner = document.getElementById('logo-banner');
+            if (logoBanner) {
+                logoBanner.addEventListener('animationend', () => {
+                    // Redirect to the menu page after the animation completes
+                    window.location.href = 'game_menu.html'; // Change 'menu.html' to the actual menu page URL
+                });
+            }
+        });
+    </script>
+</body>
+</html>

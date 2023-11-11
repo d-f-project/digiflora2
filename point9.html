@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Σημείο 9: Η Δάφνη</title>
+    <link rel="icon" type="image/x-icon" href="./generalAssets/favicon.ico" />
+    <!-- Font Awesome icons (free version) -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Patrick+Hand|Poppins:400,700" rel="stylesheet">
+    <!-- Core theme CSS (includes Bootstrap) -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+            text-align: center;
+            background-color: #9BC4B9; /* Light green background */
+        }
+
+        header {
+            background-color: #9BC4B9; /* Green header background */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo {
+            width: 80px !important;
+            height: 80px !important;
+            margin-bottom: 5px;
+        }
+
+        h1 {
+            font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+            font-size: 36px;
+            color: #F5F6AF; /* Yellow heading text color */
+        }
+
+        #container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            font-size: 20px;
+            color: #333;
+        }
+
+        button {
+            background-color: #9BC4B9; /* Green button background */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #F5F6AF; /* Darker yellow on hover */
+            color: black;
+        }
+
+        .image-container {
+            position: relative;
+            max-width: 100%; /* Ensure the image container doesn't exceed its parent's width */
+        }
+
+        img {
+            width: 100%; /* Make the image responsive to fit the container width */
+            height: auto; /* Automatically adjust the height to maintain aspect ratio */
+            display: block; /* Remove extra space under the image */
+        }
+
+        .point-of-interest {
+            position: absolute;
+            background-size: cover;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .point-of-interest:not(.active) {
+            background-image: url('./generalAssets/tiny_logo_black.png'); /* Replace with your inactive point image */
+        }
+
+        .point-of-interest.active {
+            background-image: url('./generalAssets/tiny_logo_yellow_black.png'); /* Replace with your active point image */
+        }
+
+        .point-of-interest.visited {
+            background-image: url('./generalAssets/tiny_logo_blue_black.png'); /* Replace with your visited point image */
+        }
+
+        .label {
+			font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+            position: absolute;
+            bottom: 100%; /* Place the label above the point */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #F9EFE6; /* Yellow background for labels */
+            color: #000000; /* Text color for labels */
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: none; /* Labels hidden by default */
+            font-size: 12px; /* Adjust label font size as needed */
+            text-align: center; /* Center-align text */
+        }
+
+        .label-image {
+            max-width: 20px;
+            height: auto;
+            margin-bottom: 5px;
+            display: block;
+            margin: 0 auto; /* Center-align the image */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img class="logo" src="./generalAssets/small_logo_yellow_black.png" alt="DigiFlora Logo" />
+        <h1>Χάρτης του<br> Βοτανικού Κήπου Κεφαλονιάς</h1>
+    </header>
+    <div id="container">
+        <div class="image-container">
+            <img src="./generalAssets/botanic_map.jpg" alt="Map of the Botanic Garden in Kefalonia" />
+            <!-- Points of interest -->
+
+            <!-- Point 1 -->
+            <div class="point-of-interest" id="point1" style="left: 78%; top: 17%;">
+                <div class="label">
+                    <img src="./generalAssets/logo_garden.png" alt="Point 1 Image" class="label-image">
+                    <span class="label-text">Δεντρολίβανο</span>
+                </div>
+            </div>
+
+            <!-- Point 2 -->
+            <div class="point-of-interest" id="point2" style="left: 57%; top: 35%;">
+                <div class="label">
+                    <img src="./generalAssets/logo_garden.png" alt="Point 2 Image" class="label-image">
+                    <span class="label-text">Ελιά</span>
+                </div>
+            </div>
+
+            <!-- Point 3 -->
+            <div class="point-of-interest" id="point3" style="left: 45%; top: 20%;">
+                <div class="label">
+                    <img src="./generalAssets/logo_garden.png" alt="Point 3 Image" class="label-image">
+                    <span class="label-text">Κυπαρίσσι</span>
+                </div>
+            </div>
+
+            <!-- Point 4 -->
+            <div class="point-of-interest" id="point4" style="left: 38%; top: 30%;">
+                <div class="label">
+                    <img src="./generalAssets/logo_garden.png" alt="Point 4 Image" class="label-image">
+                    <span class="label-text">Αρωματικά</span>
+                </div>
+            </div>
+
+            <!-- Point 5 -->
+            <div class="point-of-interest" id="point5" style="left: 32%; top: 38%;">
+                <div class="label">
+                    <img src="./generalAssets/logo_garden.png" alt="Point 5 Image" class="label-image">
+                    <span class="label-text">Αθάνατος</span>
+                </div>
+            </div>
+
+            <!-- Point 6 -->
+            <div class="point-of-interest" id="point6" style="left: 21%; top: 54%;">
+                <div class="label">
+                    <img src="./generalAssets/logo_garden.png" alt="Point 6 Image" class="label-image">
+                    <span class="label-text">Λυγαριά</span>
+                </div>
+            </div>
+
+            <!-- Point 7 -->
+            <div class="point-of-interest" id="point7" style="left: 33%; top: 55%;">
+                <div class="label">
+                    <img src="./generalAssets/logo_garden.png" alt="Point 7 Image" class="label-image">
+                    <span class="label-text">Μυρτιά</span>
+                </div>
+            </div>
+
+            <!-- Point 8 -->
+            <div class="point-of-interest" id="point8" style="left: 37%; top: 76%;">
+                <div class="label">
+                    <img src="./generalAssets/logo_garden.png" alt="Point 8 Image" class="label-image">
+                    <span class="label-text">Πουρνάρι</span>
+                </div>
+            </div>
+
+            <!-- Point 9 -->
+            <div class="point-of-interest" id="point9" style="left: 79%; top: 48%;">
+                <div class="label">
+                    <img src="./generalAssets/logo_garden.png" alt="Point 9 Image" class="label-image">
+                    <span class="label-text">Πικροδάφνη</span>
+                </div>
+            </div>
+
+            <!-- Point 10 -->
+            <div class="point-of-interest" id="point10" style="left: 81%; top: 31%;">
+                <div class="label">
+                    <img src="./generalAssets/logo_garden.png" alt="Point 10 Image" class="label-image">
+                    <span class="label-text">Δάφνη</span>
+                </div>
+            </div>
+
+            <!-- Add more points of interest with similar structures -->
+        </div>
+        <br>
+        <button onclick="window.location.href='./pikrodafni/index_pikrodafni.html';">
+            Φτάσατε στην...<br>Πικροδάφνη!
+        </button>
+    </div>
+
+    <script>
+        // JavaScript for responsive points of interest
+        const pointsMapping = {
+            point1: './dendrolivano/index_dendrolivano.html', // Replace with the actual URLs
+            point2: './elia/index_elia.html', // Replace with the actual URLs
+            point3: './kyparissi/index_kyparissi.html', // Replace with the actual URLs
+            point4: './aromatika/index_aromatika.html', // Replace with the actual URLs
+            point5: './athanatos/index_athanatos.html', // Replace with the actual URLs
+            point6: './lygaria/index_lygaria.html', // Replace with the actual URLs
+            point7: './myrtia/index_myrtia.html', // Replace with the actual URLs
+            point8: './pournari/index_pournari.html', // Replace with the actual URLs
+            point9: './pikrodafni/index_pikrodafni.html', // Replace with the actual URLs
+			point10: './dafni/index_dafni.html', // Replace with the actual URLs
+            // Add more mappings for other points
+        };
+
+        const activePoints = ['point9']; // List of active points by ID
+        const visitedPoints = ['point1', 'point2', 'point3', 'point4', 'point5', 'point6', 'point7', 'point8']; // List of visited points by ID
+        const pointsWithLabels = ['point9']; // List of points with labels by ID
+
+        const pointsOfInterest = document.querySelectorAll('.point-of-interest');
+
+        window.addEventListener('resize', () => {
+            updatePointsOfInterestPosition();
+        });
+
+        function updatePointsOfInterestPosition() {
+            const imageContainer = document.querySelector('.image-container');
+            const image = document.querySelector('img');
+
+            const containerWidth = imageContainer.offsetWidth;
+            const containerHeight = imageContainer.offsetHeight;
+            const imageWidth = image.width;
+            const imageHeight = image.height;
+
+            pointsOfInterest.forEach((point) => {
+                const leftPercentage = parseFloat(point.style.left);
+                const topPercentage = parseFloat(point.style.top);
+
+                const newLeft = (leftPercentage / 100) * containerWidth;
+                const newTop = (topPercentage / 100) * containerHeight;
+
+                point.style.left = `${(newLeft / containerWidth) * 100}%`;
+                point.style.top = `${(newTop / containerHeight) * 100}%`;
+
+                // Check if the point should be active, visited, or neither
+                const pointId = point.id;
+                const isActive = activePoints.includes(pointId);
+                const isVisited = visitedPoints.includes(pointId);
+
+                point.classList.toggle('active', isActive);
+                point.classList.toggle('visited', isVisited);
+
+                // Show the label for the points with labels
+                const hasLabel = pointsWithLabels.includes(pointId);
+                const label = point.querySelector('.label');
+                label.style.display = hasLabel && (isActive || isVisited) ? 'block' : 'none';
+
+                // Add click event listener for active points
+                if (isActive) {
+                    point.addEventListener('click', () => {
+                        const pageURL = pointsMapping[pointId];
+                        if (pageURL) {
+                            window.location.href = pageURL;
+                        }
+                    });
+                }
+            });
+        }
+
+        // Initial position update
+        updatePointsOfInterestPosition();
+    </script>
+</body>
+</html>

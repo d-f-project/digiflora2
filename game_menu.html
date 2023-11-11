@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Κύριο Μενού</title>
+    <link rel="icon" type="image/x-icon" href="./generalAssets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Patrick+Hand|Poppins:400,700" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+            text-align: center;
+            background-color: #9BC4B9; /* Light green background */
+        }
+
+        header {
+            background-color: #9BC4B9; /* Green header background */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo {
+            width: 80px !important;
+            height: 80px !important;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+            font-size: 36px;
+            color: #F5F6AF; /* Yellow heading text color */
+        }
+
+        #menu-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+		
+		#menu-container {
+            background-image: url('./generalAssets/map_black_white.png'); /* Replace 'your-image-url.jpg' with your image file URL */
+            background-size: contain; /* Adjust background-size as needed */
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .menu-button {
+            background-color: #9BC4B9; /* Green button background */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-bottom: 10px;
+            width: 200px;
+        }
+
+        .menu-button:hover {
+            background-color: #F5F6AF; /* Darker yellow on hover */
+            color: black;
+        }
+
+        h2 {
+            font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+            font-size: 25px;
+            color: #9BC4B9; /* Green heading text color */
+        }
+		
+		h3 {
+            font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+            font-size: 22px;
+            color: #9BC4B9; /* Green heading text color */
+        }
+		
+		#container-2 {
+            background-color: #F9EFE6;
+			padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+		
+		#container-3 {
+            background-color: #ffffff;
+			padding-right: 20px;
+			padding-left: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+		
+		.responsive-image-container {
+			max-width: 100%;
+			display: flex;
+			justify-content: center;
+			padding: 10px; /* Optional padding for spacing */
+		}
+
+		.responsive-image {
+			max-width: 100%;
+			height: auto;
+		}
+		
+		/* CSS for screens larger than a certain width where you want to limit the image size */
+
+		@media (min-width: 768px) {
+			.responsive-image {
+				max-width: 70% !important; /* Use !important to make sure this rule takes precedence - Adjust this percentage as needed to match the container's size */
+			}
+		}
+</style>
+</head>
+<body>
+    <header>
+        <img class="logo" src="./generalAssets/small_logo_yellow_black.png" alt="DigiFlora Logo" />
+        <h1>DigiFlora</h1>
+    </header>
+    <div id="menu-container">
+		<div id="container-2">
+			<h2>Ψηφιακό εκπαιδευτικό υλικό για μαθητές Δημοτικού και Γυμνασίου</h2>
+		</div>
+		<br>
+		<div id="container-3">
+			<h3>Κύριο Μενού</h3>
+		</div>
+		<br>
+        <button class="menu-button" onclick="window.location.href='game_intro.html';">
+            Νέο Παιχνίδι
+        </button>
+		<button class="menu-button" onclick="window.location.href='game_help.html';">
+            Βοήθεια
+        </button>		
+		<button class="menu-button" onclick="window.location.href='game_books.html';">
+            Βιβλία για Μαθητές
+        </button>
+		<button class="menu-button" onclick="window.location.href='game_bibliography.html';">
+            Βιβλιογραφία
+        </button>
+		<button class="menu-button" onclick="window.location.href='game_credits.html';">
+            Συντελεστές
+        </button>
+        <button class="menu-button" onclick="window.location.href='https://www.digiflora.fst.ionio.gr/';">
+            Έξοδος
+        </button>
+    </div>
+	<br>
+	<!-- Add a div around the image for better control -->
+	<div class="responsive-image-container">
+		<img src="./generalAssets/espa.jpg" alt="ΕΣΠΑ 2014-2020" class="responsive-image"/>
+	</div>
+</body>
+</html>
