@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Κυπαρίσσι: Παιχνίδι Αναδιάταξης Προτάσεων</title>
+    <link rel="icon" type="image/x-icon" href="./generalAssets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Patrick+Hand|Poppins:400,700" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Comic Sans MS', cursive, Arial, sans-serif;
+	background-color: #F9EFE6;
+	text-align: center;
+  }
+  
+  header {
+	background-color: #9BC4B9; /* Green header background */
+	padding: 5px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	}
+
+	.logo {
+		width: 80px !important;;
+		height: 80px !important;; /* Add a height to maintain the aspect ratio */
+		margin-bottom: 5px;
+	}
+
+	h1 {
+		font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+		font-size: 36px;
+		color: #F5F6AF; /* Yellow heading text color */
+	}
+  
+  #paragraph {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    max-width: 800px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  #timer {
+    text-align: left;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  #moves {
+    text-align: right;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  #sentences {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  .sentence {
+    background-color: #E1E5EA;
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+    text-align: left;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .correct {
+    background-color: #9BC4B9;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+    cursor: default;
+	color: #fff;
+  }
+  .pressed {
+    background-color: #F5F6AF;
+    box-shadow: inset 0px 0px 6px rgba(0, 0, 0, 0.2);
+  }
+  #successMessage {
+    display: none;
+    color: #28a745;
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 20px;
+  }
+  #errorMessage {
+    display: none;
+    color: #dc3545;
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 20px;
+  }
+  /* Modal Styles */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+  }
+  .modal-content {
+    background-color: #F9EFE6;
+    border-radius: 10px;
+    max-width: 700px;
+    margin: 0 auto;
+    margin-top: 20vh;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+  }
+  .play-again-button {
+    background-color: #9BC4B9;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .play-again-button:hover {
+	background-color: #F5F6AF;
+    color: #000000;
+  }
+  
+  /* Add this style for the solution button */
+    #solutionButton {
+      background-color: #9BC4B9;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    #solutionButton:hover {
+      background-color: #F5F6AF;
+      color: #000000;
+    }
+</style>
+</head>
+<body>
+	<header>
+		<img class="logo" src="./generalAssets/small_logo_yellow_black.png" alt="DigiFlora Logo" /> <!-- Add your logo path -->
+
+		<h1>Βάλε τις 10 προτάσεις στη σωστή σειρά</h1>
+	</header>
+	<div id="paragraph">
+	  <p id="timer">Χρόνος: <span id="time">0</span> δευτ.<br>
+	  <!-- Add the rules button here -->
+	  <button id="rulesButton" class="play-again-button" onclick="openRulesModal()">Κανόνες</button></p>
+	  <p id="moves">Κινήσεις που σας απομένουν: <span id="moveCount">20</span></p>
+	  <div id="sentences">
+		<div class="sentence" data-index="0">Το κυπαρίσσι πήρε το όνομά του από τον Κυπάρισσο.</div>
+		<div class="sentence" data-index="1">Ο Κυπάρισσος ήταν εγγονός του Ηρακλή.</div>
+		<div class="sentence" data-index="2">Ο Κυπάρισσος ήταν φίλος του Απόλλωνα.</div>
+		<div class="sentence" data-index="3">Ο Απόλλωνας του χάρισε ένα ελάφι για συντροφιά.</div>
+		<div class="sentence" data-index="4">Το ελάφι έγινε το αγαπημένο ζώο του Κυπάρισσου.</div>
+		<div class="sentence" data-index="5">Ο Κυπάρισσος σκότωσε κατά λάθος το ελάφι με το ακόντιό του.</div>
+		<div class="sentence" data-index="6">Ζήτησε από τους θεούς να πεθάνει κι αυτός.</div>
+		<div class="sentence" data-index="7">Ο Απόλλωνας τον μεταμόρφωσε σε κυπαρίσσι.</div>
+		<div class="sentence" data-index="8">Επίσης  του υποσχέθηκε ότι τα δάκρυά του θα κυλούσαν αιώνια από τον κορμό του.</div>
+		<div class="sentence" data-index="9">Από τότε το κυπαρίσσι έγινε σύμβολο του πένθους και της θλίψης.</div>
+		 				 
+		<button id="solutionButton" class="play-again-button" onclick="showSolution()">Λύση</button>
+		<button id="modalRestartButton" class="play-again-button" onclick="refreshPage()">Ανακάτεμα Προτάσεων</button>
+
+	  </div>
+	  
+	  <p id="successMessage">Καλή δουλειά! Αναδιατάξατε σωστά την παράγραφο.</p>
+	  <p id="errorMessage">Ωχ! Έχετε χρησιμοποιήσει όλες σας τις κινήσεις. Προσπαθήστε ξανά.</p>
+	</div>
+
+	<!-- Rules Modal -->
+	<div id="rulesModal" class="modal">
+	  <div class="modal-content">
+		<!-- Modal title -->
+		<h2>Κανόνες Παιχνιδιού</h2>
+		<!-- Modal rules text -->
+		<p>Κάντε κλικ με το ποντίκι σας επάνω στην πρόταση που επιθυμείτε να αλλάξετε θέση.<br>
+		Η πρόταση θα πάρει κίτρινο χρώμα. Κάντε στη συνέχεια κλικ επάνω σε μία άλλη πρόταση για να αλλάξετε τις θέσεις των δύο προτάσεων.<br>
+		Εάν κάποια πρόταση τοποθετηθεί σωστά εντός της παραγράφου, τότε θα πάρει πράσινο χρώμα.<br>
+		Οι προτάσεις με πράσινο χρώμα κλειδώνουν και δεν μπορείτε να τις αλλάξετε θέση.<br>
+		Στόχος είναι όλες οι προτάσεις να γίνουν πράσινες.<br>
+		Προσοχή όμως στα βήματά σας.... Έχετε 20 κινήσεις για να καταφέρετε να δημιουργήσετε την παράγραφο σωστά.<br>
+		Ο χρόνος σας φαίνεται πάνω αριστερά! Προσπαθήστε για το καλύτερο!<br>
+		Καλή επιτυχία!</p>
+		<!-- Close button -->
+		<button class="play-again-button" onclick="closeRulesModal()">Κλείσιμο</button>
+	  </div>
+	</div>
+
+	<!-- Success Modal -->
+	<div id="successModal" class="modal">
+	  <div class="modal-content">
+		<p id="successModalMessage">Συγχαρητήρια! Ολοκληρώσατε τη δραστηριότητα.</p>
+		<button class="play-again-button" onclick="restartGame()">Παίξτε Ξανά</button>
+		<button class="play-again-button" onclick="window.location.href='kyparissi3.html';">Επόμενο...</button>
+	  </div>
+	</div>
+
+	<!-- Error Modal -->
+	<div id="errorModal" class="modal">
+	  <div class="modal-content">
+		<p id="errorModalMessage">Ωχ! Έχετε χρησιμοποιήσει όλες σας τις κινήσεις. Προσπαθήστε ξανά.</p>
+		<button class="play-again-button" onclick="restartGame()">Παίξτε Ξανά</button>
+	  </div>
+	</div>
+
+	<script>
+	  const sentencesContainer = document.getElementById('sentences');
+	  const timerElement = document.getElementById('time');
+	  const moveCountElement = document.getElementById('moveCount');
+	  const successMessage = document.getElementById('successMessage');
+	  const errorMessage = document.getElementById('errorMessage');
+	  const successModal = document.getElementById('successModal');
+	  const errorModal = document.getElementById('errorModal');
+	  const successModalMessage = document.getElementById('successModalMessage');
+	  const errorModalMessage = document.getElementById('errorModalMessage');
+
+	  let moveCount = 20;
+	  let timeElapsed = 0;
+	  let timerInterval;
+
+		// Function to open the rules modal
+	  function openRulesModal() {
+		const rulesModal = document.getElementById('rulesModal');
+		rulesModal.style.display = 'block';
+	  }
+
+	  // Function to close the rules modal
+	  function closeRulesModal() {
+		const rulesModal = document.getElementById('rulesModal');
+		rulesModal.style.display = 'none';
+	  }
+
+
+	  function shuffleArray(array) {
+		for (let i = array.length - 1; i > 0; i--) {
+		  const j = Math.floor(Math.random() * (i + 1));
+		  [array[i], array[j]] = [array[j], array[i]];
+		}
+	  }
+
+	  function updateTimer() {
+		timeElapsed++;
+		timerElement.textContent = timeElapsed + ' seconds';
+	  }
+
+	  function switchSentences(index1, index2) {
+		const sentenceElements = Array.from(sentencesContainer.getElementsByClassName('sentence'));
+		const tempText = sentenceElements[index1].textContent;
+		sentenceElements[index1].textContent = sentenceElements[index2].textContent;
+		sentenceElements[index2].textContent = tempText;
+	  }
+
+	  function checkParagraph() {
+		const sentences = Array.from(sentencesContainer.getElementsByClassName('sentence'));
+		const correctSentences = [
+		  "Το κυπαρίσσι πήρε το όνομά του από τον Κυπάρισσο.",
+		  "Ο Κυπάρισσος ήταν εγγονός του Ηρακλή.",
+		  "Ο Κυπάρισσος ήταν φίλος του Απόλλωνα.",
+		  "Ο Απόλλωνας του χάρισε ένα ελάφι για συντροφιά.",
+		  "Το ελάφι έγινε το αγαπημένο ζώο του Κυπάρισσου.",
+		  "Ο Κυπάρισσος σκότωσε κατά λάθος το ελάφι με το ακόντιό του.",
+		  "Ζήτησε από τους θεούς να πεθάνει κι αυτός.",
+		  "Ο Απόλλωνας τον μεταμόρφωσε σε κυπαρίσσι.",
+		  "Επίσης  του υποσχέθηκε ότι τα δάκρυά του θα κυλούσαν αιώνια από τον κορμό του.",
+		  "Από τότε το κυπαρίσσι έγινε σύμβολο του πένθους και της θλίψης."
+		];
+
+		sentences.forEach((sentence, index) => {
+		  if (sentence.textContent === correctSentences[index]) {
+			sentence.classList.add('correct');
+			sentence.removeEventListener('click', onSentenceClick);
+		  } else {
+			sentence.classList.remove('correct');
+		  }
+		});
+
+		if (sentences.every((sentence, index) => sentence.textContent === correctSentences[index])) {
+		  clearInterval(timerInterval);
+		  successMessage.style.display = 'block';
+		  successModal.style.display = 'block';
+		  successModalMessage.textContent = 'Συγχαρητήρια! Κάνατε καλή δουλειά! Αναδιατάξατε σωστά την παράγραφο.';
+		} else if (moveCount <= 0) {
+		  clearInterval(timerInterval);
+		  errorMessage.style.display = 'block';
+		  errorModal.style.display = 'block';
+		  errorModalMessage.textContent = 'Ωχ! Έχετε χρησιμοποιήσει όλες σας τις κινήσεις. Προσπαθήστε ξανά.';
+		}
+	  }
+
+	  function onSentenceClick(e) {
+		const clickedIndex = parseInt(e.target.getAttribute('data-index'));
+		const targetIndex = sentencesContainer.querySelector('.pressed');
+
+		if (targetIndex !== null) {
+		  switchSentences(clickedIndex, parseInt(targetIndex.getAttribute('data-index')));
+		  targetIndex.classList.remove('pressed');
+		  if (moveCount !== 0){
+			moveCount--;
+		  }
+		  moveCountElement.textContent = moveCount;
+		  checkParagraph();
+		} else {
+		  e.target.classList.add('pressed');
+		}
+	  }
+	  
+	  // Function to refresh the page
+	function refreshPage() {
+		location.reload(); // This will reload the current page
+	}
+
+	  function restartGame() {
+		moveCount = 20;
+		moveCountElement.textContent = moveCount;
+		timeElapsed = 0;
+		timerElement.textContent = '0 seconds';
+
+		successMessage.style.display = 'none';
+		errorMessage.style.display = 'none';
+
+		const sentences = Array.from(sentencesContainer.getElementsByClassName('sentence'));
+		const correctSentences = [
+		  "Το κυπαρίσσι πήρε το όνομά του από τον Κυπάρισσο.",
+		  "Ο Κυπάρισσος ήταν εγγονός του Ηρακλή.",
+		  "Ο Κυπάρισσος ήταν φίλος του Απόλλωνα.",
+		  "Ο Απόλλωνας του χάρισε ένα ελάφι για συντροφιά.",
+		  "Το ελάφι έγινε το αγαπημένο ζώο του Κυπάρισσου.",
+		  "Ο Κυπάρισσος σκότωσε κατά λάθος το ελάφι με το ακόντιό του.",
+		  "Ζήτησε από τους θεούς να πεθάνει κι αυτός.",
+		  "Ο Απόλλωνας τον μεταμόρφωσε σε κυπαρίσσι.",
+		  "Επίσης  του υποσχέθηκε ότι τα δάκρυά του θα κυλούσαν αιώνια από τον κορμό του.",
+		  "Από τότε το κυπαρίσσι έγινε σύμβολο του πένθους και της θλίψης."
+		];
+		shuffleArray(sentences);
+
+		sentences.forEach((sentence, index) => {
+		  sentence.textContent = correctSentences[index];
+		  sentence.classList.remove('correct', 'pressed');
+		  sentence.addEventListener('click', onSentenceClick);
+		});
+
+		clearInterval(timerInterval);
+		timerInterval = setInterval(updateTimer, 1000);
+
+		// Close modals when restarting the game
+		successModal.style.display = 'none';
+		errorModal.style.display = 'none';
+	  }
+
+	  document.addEventListener('DOMContentLoaded', () => {
+		const sentences = Array.from(sentencesContainer.getElementsByClassName('sentence'));
+		const correctSentences = [
+		  "Το κυπαρίσσι πήρε το όνομά του από τον Κυπάρισσο.",
+		  "Ο Κυπάρισσος ήταν εγγονός του Ηρακλή.",
+		  "Ο Κυπάρισσος ήταν φίλος του Απόλλωνα.",
+		  "Ο Απόλλωνας του χάρισε ένα ελάφι για συντροφιά.",
+		  "Το ελάφι έγινε το αγαπημένο ζώο του Κυπάρισσου.",
+		  "Ο Κυπάρισσος σκότωσε κατά λάθος το ελάφι με το ακόντιό του.",
+		  "Ζήτησε από τους θεούς να πεθάνει κι αυτός.",
+		  "Ο Απόλλωνας τον μεταμόρφωσε σε κυπαρίσσι.",
+		  "Επίσης  του υποσχέθηκε ότι τα δάκρυά του θα κυλούσαν αιώνια από τον κορμό του.",
+		  "Από τότε το κυπαρίσσι έγινε σύμβολο του πένθους και της θλίψης."
+		];
+		shuffleArray(sentences);
+
+		sentences.forEach((sentence, index) => {
+		  sentence.textContent = correctSentences[index];
+		  sentence.addEventListener('click', onSentenceClick);
+		});
+
+		timerInterval = setInterval(updateTimer, 1000);
+	  });
+	  
+	  // Function to show the correct sentence order without displaying the success modal
+    function showSolution() {
+      const sentences = Array.from(sentencesContainer.getElementsByClassName('sentence'));
+      const correctSentences = [
+        "Το κυπαρίσσι πήρε το όνομά του από τον Κυπάρισσο.",
+        "Ο Κυπάρισσος ήταν εγγονός του Ηρακλή.",
+        "Ο Κυπάρισσος ήταν φίλος του Απόλλωνα.",
+        "Ο Απόλλωνας του χάρισε ένα ελάφι για συντροφιά.",
+        "Το ελάφι έγινε το αγαπημένο ζώο του Κυπάρισσου.",
+        "Ο Κυπάρισσος σκότωσε κατά λάθος το ελάφι με το ακόντιό του.",
+        "Ζήτησε από τους θεούς να πεθάνει κι αυτός.",
+        "Ο Απόλλωνας τον μεταμόρφωσε σε κυπαρίσσι.",
+        "Επίσης  του υποσχέθηκε ότι τα δάκρυά του θα κυλούσαν αιώνια από τον κορμό του.",
+        "Από τότε το κυπαρίσσι έγινε σύμβολο του πένθους και της θλίψης."
+      ];
+
+      sentences.forEach((sentence, index) => {
+        sentence.textContent = correctSentences[index];
+        sentence.classList.remove('correct', 'pressed');
+		sentence.style.backgroundColor = '#f9efe6'; // Set background color to #f9efe6
+        sentence.removeEventListener('click', onSentenceClick);
+      });
+    }
+	</script>
+</body>
+</html>

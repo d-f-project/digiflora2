@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+	<link rel="icon" type="image/x-icon" href="./generalAssets/favicon.ico" />
+	<!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Patrick+Hand|Poppins:400,700" rel="stylesheet">
+    <!-- CSS -->
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@1,600&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap");
+
+        :root {
+            --blue: #0282f9;
+            --bridal-heath: #fffbf6;
+            --dark-gray: #262626;
+            --gray: #323232;
+            --sidecar: #f4eac0;
+            --green: #4caf50; /* Playful green color */
+            --white: #fff;
+            --white-smoke: #f5f5f5;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: "Raleway", serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+            text-align: center;
+            background-color: #F9EFE6; /* Light green background */
+            padding: 1rem;
+        }
+
+        .content {
+            margin: 0 auto;
+            max-width: 85rem;
+            width: 100%;
+        }
+
+        .header {
+			background-color: #9BC4B9; /* Green header background */
+			padding: 20px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-bottom: 10px;
+			
+        }
+		
+		h1 {
+			font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+			font-size: 36px;
+			color: #F5F6AF; /* Yellow heading text color */
+		}
+		
+		.logo {
+			width: 80px !important;;
+			height: 80px !important;; /* Add a height to maintain the aspect ratio */
+			margin-bottom: 5px;
+		}
+
+        .movement {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .subtitle {
+            color: #000000;
+            font-size: 1rem;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 0.25rem;
+			font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+            font-size: 18px;
+			
+        }
+
+        .available {
+            border-radius: 0.25rem;
+            box-shadow: inset 0.25rem 0.25rem 0.25rem rgba(0, 0, 0, 0.2),
+            inset -0.25rem -0.25rem 0.25rem rgba(0, 0, 0, 0.2);
+            color: #000000;
+            font-size: 2rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+			font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+            
+        }
+
+        .card-container {
+			display: grid;
+			grid-gap: 2rem;
+			grid-template-columns: repeat(4, 1fr); /* Set the grid to 4 columns by default */
+			
+			background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		}
+
+		@media screen and (max-width: 600px) {
+			.card-container {
+				grid-template-columns: repeat(2, 1fr); /* Change to 2 columns for screens <= 600px width */
+			}
+		}
+
+        .card {
+            background-color: #9BC4B9; /* Playful green background color */
+            border: 0.2rem solid var(--dark-gray);
+            border-radius: 0.25rem;
+            cursor: pointer;
+            height: 15rem;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 500ms ease-in-out;
+            width: 100%;
+			color: white;
+        }
+
+        .card--picked {
+            transform: rotateY(180deg);
+        }
+
+        .card--guessed {
+            background-color: #F9EFE6;
+            transform: rotateY(180deg) scale(0.9);
+			color: #9BC4B9;
+        }
+
+        .card__front,
+        .card__back {
+            align-items: center;
+            backface-visibility: hidden;
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            left: 0;
+            padding: 1rem;
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            transition: transform 330ms ease-in-out;
+            width: 100%;
+        }
+
+        .card__front {
+            flex-direction: column;
+            transform: rotateY(-180deg);
+        }
+
+        .card__back {
+            background-color: #F5F6AF;
+            transform: rotateY(0);
+        }
+
+        .front__img {
+            margin-bottom: 0.5rem;
+            width: 8rem;
+        }
+
+        .back__img {
+            width: 9rem;
+        }
+
+        .card__name {
+            font-size: 0.9rem;
+            font-weight: 400;
+            text-transform: capitalize;
+        }
+
+        /* Modal for winning or losing the game */
+        .modal {
+			align-items: center;
+			backdrop-filter: blur(0.2rem);
+			background-color: rgba(0, 0, 0, 0.3);
+			bottom: 0;
+			display: flex;
+			justify-content: center;
+			left: 0;
+			opacity: 0;
+			position: fixed;
+			right: 0;
+			top: 0;
+			transform: translateY(100%);
+			transition: all 270ms ease-in;
+		}
+
+        .modal--open {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modal-container {
+			background-color: #F9EFE6;
+			border-radius: 0.5rem;
+			display: flex;
+			flex-direction: column;
+			align-items: center; /* Center horizontally */
+			justify-content: center; /* Center vertically */
+			max-width: 80%; /* Adjust the maximum width as needed */
+			padding: 2rem; /* Add some padding to the modal content */
+			width: 100%;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			text-align: center;
+			font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+		}
+
+        .modal-title {
+			font-family: "Cormorant Infant", serif, Arial, sans-serif; /* Use playful font-family */
+			font-size: 2rem;
+			font-weight: 600; /* Make the title bold */
+			line-height: 1.2;
+			margin-bottom: 1rem;
+		}
+
+        .button {
+			background-color: #9BC4B9; 
+			border: none;
+			color: #fff; /* White text color */
+			cursor: pointer;
+			font-size: 1.2rem;
+			font-weight: bold;
+			padding: 0.5rem 1rem;
+			border-radius: 5px; /* Add rounded corners */
+			margin-top: 1rem; /* Provide some spacing from the text */
+			transition: background-color 0.3s ease-in-out; /* Add a smooth hover effect */
+		}
+		
+		.modal--win .modal-title {
+			color: green; /* Green color for winning */
+		}
+
+		.modal--lose .modal-title {
+			color: red; /* Red color for losing */
+		}
+
+        .button:hover,
+        .button:active {
+            background-color: #F5F6AF;
+            color: #000000;
+        }
+		
+        /* Navigation Bar and Logo: STARTS HERE */
+
+        /* Add a black background color to the top navigation */
+        .topnav {
+            background-color: #000000;
+            overflow: hidden;
+        }
+
+        /* Style the links inside the navigation bar */
+        .topnav a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        /* Add an active class to highlight the current page */
+        .active {
+            background-color: #0c85f7;
+            color: white;
+        }
+
+        /* Hide the link that should open and close the topnav on small screens */
+        .topnav .icon {
+            display: none;
+        }
+
+        /* Dropdown container - needed to position the dropdown content */
+        .dropdown {
+            float: left;
+            overflow: hidden;
+        }
+
+        /* Style the dropdown button to fit inside the topnav */
+        .dropdown .dropbtn {
+            font-size: 17px;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
+
+        /* Style the dropdown content (hidden by default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        /* Style the links inside the dropdown */
+        .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        /* Add a dark background on topnav links and the dropdown button on hover */
+        .topnav a:hover,
+        .dropdown:hover .dropbtn {
+            background-color: #555;
+            color: white;
+        }
+
+        /* Add a grey background to dropdown links on hover */
+        .dropdown-content a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* Show the dropdown menu when the user moves the mouse over the dropdown button */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+        @media screen and (max-width: 600px) {
+            .topnav a:not(:first-child),
+            .dropdown .dropbtn {
+                display: none;
+            }
+
+            .topnav a.icon {
+                float: right;
+                display: block;
+            }
+        }
+
+        /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+        @media screen and (max-width: 600px) {
+            .topnav.responsive {
+                position: relative;
+            }
+
+            .topnav.responsive a.icon {
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+
+            .topnav.responsive a {
+                float: none;
+                display: block;
+                text-align: left;
+            }
+
+            .topnav.responsive .dropdown {
+                float: none;
+            }
+
+            .topnav.responsive .dropdown-content {
+                position: relative;
+            }
+
+            .topnav.responsive .dropdown .dropbtn {
+                display: block;
+                width: 100%;
+                text-align: left;
+            }
+        }
+
+        .logo {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: auto;
+        }
+
+        /* Navigation Bar and Logo: ENDS HERE */
+		
+		
+        /* Modal for image information */
+        .info-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Updated style for the information modal */
+		.info-modal-content {
+			background-color: #fff;
+			margin: 15% auto;
+			padding: 20px;
+			border: 1px solid #888;
+			width: 80%;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			text-align: center;
+			border-radius: 10px; /* Add rounded corners */
+		}
+
+		.close-info-modal {
+			color: #ff0000; /* Use a playful red color for the close button */
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		/* Add some playful fonts */
+		.info-modal-content h2 {
+			font-family: 'Comic Sans MS', cursive, Arial, sans-serif; /* Use a playful font */
+			color: #00b300; /* Green color for the title */
+			font-size: 2rem;
+			font-weight: bold;
+			margin-bottom: 1rem;
+		}
+
+		.info-modal-content p {
+			font-family: 'Comic Sans MS', cursive, Arial, sans-serif; /* Use the same playful font */
+			color: #333; /* Slightly darker text color */
+			font-size: 1.2rem;
+		}
+
+		/* Add a playful background color */
+		.info-modal-content {
+			background-color: #F9EFE6; /* pink background */
+		}
+
+		/* Updated style for the information modal button */
+		#closeInfoModalButton {
+			background-color: #9BC4B9; /* Use playful green color */
+			border: none;
+			color: #fff; /* White text color */
+			cursor: pointer;
+			font-size: 1.2rem;
+			font-weight: bold;
+			padding: 0.5rem 1rem;
+			border-radius: 5px; /* Add rounded corners */
+			margin-top: 1rem; /* Provide some spacing from the text */
+			transition: background-color 0.3s ease-in-out; /* Add a smooth hover effect */
+		}
+
+		#closeInfoModalButton:hover {
+			background-color: #F5F6AF; /* Darker green color on hover */
+			color: #000000;
+		}
+		
+		/* Success modal style */
+		.modal--open.success {
+			background-color: rgba(0, 0, 0, 0.7);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.modal-container.success {
+			background-color: #F9EFE6;
+			margin: 15% auto;
+			padding: 20px;
+			border: 1px solid #888;
+			width: 80%;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			text-align: center;
+		}
+
+		/* Style the success modal button */
+		.modal-container.success .button {
+			background-color: #9BC4B9; 
+			border: none;
+			color: #fff; /* White text color */
+			cursor: pointer;
+			font-size: 1.2rem;
+			font-weight: bold;
+			padding: 0.5rem 1rem;
+			border-radius: 5px; /* Add rounded corners */
+			margin-top: 1rem; /* Provide some spacing from the text */
+			transition: background-color 0.3s ease-in-out; /* Add a smooth hover effect */
+		}
+		
+		.modal-container.success .h3 {
+			font-family: 'Comic Sans MS', cursive, Arial, sans-serif; /* Use a playful font */
+			color: #00b300; /* Green color for the title */
+		}
+
+		.modal-container.success .button:hover {
+			background-color: #F5F6AF; /* Yellow color on hover */
+			color: #000000;
+		}
+		
+		/* Modal for game rules */
+        .rules-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Modal for game rules */
+        .rules-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Updated style for the rules modal */
+        .rules-modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            text-align: center;
+            border-radius: 10px; /* Add rounded corners */
+        }
+
+        .close-rules-modal {
+            color: #ff0000; /* Use a playful red color for the close button */
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* Add some playful fonts */
+        .rules-modal-content h2 {
+            font-family: 'Comic Sans MS', cursive, Arial, sans-serif; /* Use a playful font */
+            color: #000000; /* Green color for the title */
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .rules-modal-content p {
+            font-family: 'Comic Sans MS', cursive, Arial, sans-serif; /* Use the same playful font */
+            color: #333; /* Slightly darker text color */
+            font-size: 1.2rem;
+        }
+
+        /* Add a playful background color */
+        .rules-modal-content {
+            background-color: #F9EFE6; /* Light yellow background */
+        }
+
+        /* Updated style for the rules modal button */
+        #openRulesModalButton {
+            background-color: #9BC4B9; /* Use the same playful green color as the close button */
+            border: none;
+            color: #fff; /* White text color */
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 5px; /* Add rounded corners */
+            margin-top: 1rem; /* Provide some spacing from the text */
+            transition: background-color 0.3s ease-in-out; /* Add a smooth hover effect */
+			align-items: center;
+        }
+		
+		/* Updated style for the rules modal button */
+        #closeRulesModalButton {
+            background-color: #9BC4B9; /* Use the same playful red color as the close button */
+            border: none;
+            color: #fff; /* White text color */
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 5px; /* Add rounded corners */
+            margin-top: 1rem; /* Provide some spacing from the text */
+            transition: background-color 0.3s ease-in-out; /* Add a smooth hover effect */
+        }
+		
+		#closeRulesModalButton:hover {
+			background-color: #F5F6AF; /* Lighter yellow color on hover */
+			color: #000000;		
+		}
+
+        #openRulesModalButton:hover {
+            background-color: #F5F6AF; /* Lighter yellow color on hover */
+			color: #000000;
+        }
+		
+.movement {
+    display: flex;
+    justify-content: space-between; /* Add this line to create space between children */
+    align-items: center;
+}
+
+.subtitle-available-container {
+    display: flex;
+    align-items: center;
+}
+    </style>
+</head>
+
+<body>
+    <main class="content">
+        <header class="header">
+			<img class="logo" src="./generalAssets/small_logo_yellow_black.png" alt="DigiFlora Logo" /> <!-- Add your logo path -->
+            <h1 class="title">Παιχνίδι μνήμης με πίνακες «Τα κυπαρίσσια του Βαν Γκογκ»</h1>
+            
+        </header>
+		<div class="movement">
+			<div class="subtitle-available-container" style="margin-left: auto;">
+				<h6 class="subtitle">Υπολειπόμενες<br> Λάθος Κινήσεις &nbsp;</h6>
+				<div class="available" id="available"></div> &nbsp; &nbsp; &nbsp;
+				<!-- Move the rules button to the right -->
+				<button id="openRulesModalButton" onclick="openRulesModal()" style="margin-left: auto;">Κανόνες</button>
+			</div>
+
+		</div>
+		<br>
+        <section class="card-container"></section>
+    </main>
+	
+	<!-- Modal for game rules -->
+    <div id="rulesModal" class="rules-modal">
+        <div class="rules-modal-content">
+            <span class="close-rules-modal" id="closeRulesModal" onclick="closeRulesModal()">&times;</span>
+            <h2>Κανόνες Παιχνιδιού</h2>
+            <p>Επιλέξτε κάποια από τις διαθέσιμες κάρτες.<br>
+			Η κάρτα θα γυρίσει για να αποκαλύψει την εικόνα ενός πίνακα.<br>
+			Επιλέξτε και μία δεύτερη κάρτα.<br>
+			Εάν οι δύο κάρτες απεικονίζουν τον ίδιο πίνακα, τότε θα μείνουν ανοιχτές και θα μάθετε κάποιες περαιτέρω πληροφορίες για τον πίνακα.<br>
+			Εάν όχι, τότε θα γυρίσουν πάλι ανάποδα και θα πρέπει να δοκιμάσετε άλλο συνδυασμό καρτών.<br>
+			Στόχος σας είναι να αποκαλυφθούν όλοι οι κλειστοί πίνακες.<br>
+			Προσοχή όμως... Έχετε περιορισμένο αριθμό λανθασμένων κινήσεων για να ολοκληρώσετε το παιχνίδι.<br>
+			Συνεπώς θα πρέπει να θυμάστε σε ποια κάρτα βρίσκεται ο κάθε πίνακας.<br>
+			Πιστεύετε ότι έχετε καλή μνήμη. Παίξτε για να μάθετε την απάντηση...<br>
+			Καλή επιτυχία!</p>
+            <button id="closeRulesModalButton" onclick="closeRulesModal()">Κλείσιμο</button>
+        </div>
+    </div>
+
+    <!-- Modal for image information -->
+    <div id="infoModal" class="info-modal">
+        <div class="info-modal-content">
+            <span class="close-info-modal" id="closeInfoModal">&times;</span>
+            <h2 id="imageInfoTitle">Το βρήκες!</h2>
+            <p id="imageInfoText">This is where the image information will appear.</p>
+            <button id="closeInfoModalButton">Συνέχεια</button>
+        </div>
+    </div>
+
+    <!-- Modal for winning the game -->
+    <div class="modal" id="modal">
+        <div class="modal-container">
+            <h3 class="modal-title" id="modal-title">Συγχαρητήρια! Κερδίσατε!</h3><br>
+            <button type="button" class="button" id="play-again">Παίξτε ξανά</button><br>
+			<button type="button" class="button" id="secondButton" style="display: none;" onclick="window.location.href='kyparissi5.html';">Επόμενο...</button><br>
+        </div>
+    </div>
+
+    <script>
+	
+		// JavaScript functions to handle the modal
+        function openRulesModal() {
+            document.getElementById('rulesModal').style.display = 'block';
+        }
+
+        function closeRulesModal() {
+            document.getElementById('rulesModal').style.display = 'none';
+        }
+	
+        // Define an array of objects with image information
+        const IMAGE_INFO = [
+            {
+                title: 'Έναστρη Νύχτα',
+                text: 'Το έργο «Έναστρη Νύχτα», ο Βαν Γκογκ το ζωγράφισε το 1889 και είναι παγκοσμίως διάσημο ως μια μαγική εικόνα ενός νυχτερινού στροβιλιζόμενου ουρανού που λάμπει από αστέρια. Όμως στο έργο αυτό απεικονίζονται και ένα ζευγάρι κυπαρίσσια, αγαπημένο θέμα του ζωγράφου. Βρίσκεται στο Μουσείο Μοντέρνας Τέχνης της Νέας Υόρκης.'
+            },
+            {
+                title: 'Πράσινα σταροχώραφα με κυπαρίσσια',
+                text: 'Είναι το έργο «Πράσινα σταροχώραφα με κυπαρίσσια». Ο Βαν Γκογκ το ζωγράφισε το 1889, και σήμερα βρίσκεται στην Εθνική Πινακοθήκη της Πράγας.'
+            },
+            {
+                title: 'Σταροχώραφο με Κυπαρίσσια',
+                text: 'Είναι τα έργο “Σταροχώραφο με Κυπαρίσσια”. Ο Βαν Γκογκ το ζωγράφισε το Σεπτέμβριο 1889.'
+            },
+            {
+                title: 'Δρόμος με Κυπαρίσσι και Αστέρι',
+                text: 'Είναι το έργο «Δρόμος με Κυπαρίσσι και Αστέρι» που είναι επίσης γνωστό ως  «Επαρχιακός Δρόμος στην Προβηγκία τη Νύχτα». Είναι ελαιογραφία του 1890 και βρίσκεται στην Ολλανδία, στο Μουσείο Kröller-Müller.'
+            },
+            {
+                title: 'Κυπαρίσσια (1)',
+                text: 'Είναι το έργο «Κυπαρίσσια», ζωγραφισμένο το 1889 και βρίσκεται στο Μητροπολιτικό Μουσείο Τέχνης της Νέας Υόρκης.'
+            },
+            {
+                title: 'Κυπαρίσσια (2)',
+                text: 'Είναι το έργο «Κυπαρίσσια». Ζωγραφίστηκε το 1889 και βρίσκεται στο Μουσείο Μπρούκλιν στη Νέα Υόρκη.'
+            },
+            {
+                title: 'Κινητή γέφυρα',
+                text: 'Το έργο λέγεται «Κινητή γέφυρα» και βρίσκεται στο Μουσείο «Το σπίτι του Βαν Γκογκ στην Ολλανδία, στην πόλη Ζούντερτ.'
+            },
+            {
+                title: 'Κυπαρίσσια και δύο γυναίκες',
+                text: 'Το έργο «Κυπαρίσσια και δύο γυναίκες» ζωγραφίστηκε  το Φεβρουάριο 1890 και εκτίθεται στο Μουσείο Βαν Γκογκ, στο Άμστερνταμ.'
+            }
+        ];
+
+        const CARDS = [
+            {
+                id: 1,
+                name: 'Έναστρη Νύχτα',
+                img: './assets/images/pinakas1.jpg'
+            },
+            {
+                id: 2,
+                name: 'Πράσινα σταροχώραφα με κυπαρίσσια',
+                img: './assets/images/pinakas2.jpg'
+            },
+            {
+                id: 3,
+                name: 'Σταροχώραφο με Κυπαρίσσια',
+                img: './assets/images/pinakas3.jpg'
+            },
+            {
+                id: 4,
+                name: 'Δρόμος με Κυπαρίσσι και Αστέρι',
+                img: './assets/images/pinakas4.jpg'
+            },
+            {
+                id: 5,
+                name: 'Κυπαρίσσια (1)',
+                img: './assets/images/pinakas5.jpg'
+            },
+            {
+                id: 6,
+                name: 'Κυπαρίσσια (2)',
+                img: './assets/images/pinakas6.jpg'
+            },
+            {
+                id: 7,
+                name: 'Κινητή γέφυρα',
+                img: './assets/images/pinakas7.jpg'
+            },
+            {
+                id: 8,
+                name: 'Κυπαρίσσια και δύο γυναίκες',
+                img: './assets/images/pinakas8.jpg'
+            }
+        ];
+        const cardContainer = document.querySelector('.card-container');
+        const available = document.querySelector('#available');
+        const modalTitle = document.querySelector('#modal-title');
+        const modal = document.querySelector('#modal');
+        let currentCards = [...CARDS, ...CARDS];
+        let isPaused = false;
+        let counter = CARDS.length + 12;
+
+
+        function shuffle(array) {
+            let counter = array.length,
+                temp,
+                index;
+            while (counter > 0) {
+                index = Math.floor(Math.random() * counter);
+                counter--;
+                temp = array[counter];
+                array[counter] = array[index];
+                array[index] = temp;
+            }
+            return array;
+        }
+
+        function win() {
+            isPaused = true;
+            modalTitle.innerHTML = 'Συγχαρητήρια! Κερδίσατε!';
+            modal.classList.add('modal--open');
+        }
+
+        function lose() {
+            isLose = true;
+            modalTitle.innerHTML = 'Δυστυχώς χάσατε...';
+            modal.classList.add('modal--open');
+        }
+
+        function openInfoModal(card1, card2) {
+            // Matched cards, display image information modal
+            const infoModal = document.getElementById('infoModal');
+            const infoTitle = document.getElementById('imageInfoTitle');
+            const infoText = document.getElementById('imageInfoText');
+
+            // Find the image info for the matched cards
+            const matchedCard1 = IMAGE_INFO.find((info) => info.title === card1.name);
+            const matchedCard2 = IMAGE_INFO.find((info) => info.title === card2.name);
+
+            if (matchedCard1 && matchedCard2) {
+                infoTitle.textContent = 'Το βρήκες!';
+                infoText.innerHTML = `<strong>${matchedCard1.title}</strong>: ${matchedCard1.text}<br><br><strong>${matchedCard2.title}</strong>: ${matchedCard2.text}`;
+
+                infoModal.style.display = 'block';
+            }
+        }
+
+        function handleClick(e) {
+			const { target } = e;
+
+			// Check if the card is already guessed
+			if (target.classList.contains('card--guessed')) {
+				return;
+			}
+
+			// Pick the clicked card
+			target.classList.add('card--picked');
+
+			const pickedCards = document.querySelectorAll('.card--picked');
+
+			if (pickedCards.length === 2) {
+				const [card1, card2] = pickedCards;
+
+				// Check if the two picked cards have the same name (i.e., they are a match)
+				if (card1.dataset.name === card2.dataset.name) {
+					// Display the information modal for the matched cards
+					showInfoModal(card1.dataset.name);
+
+					// Mark the matched cards as guessed
+					card1.classList.remove('card--picked');
+					card2.classList.remove('card--picked');
+					card1.classList.add('card--guessed');
+					card2.classList.add('card--guessed');
+				} else {
+					// If not a match, remove the picked class after a delay and flip the cards back
+					setTimeout(() => {
+						card1.classList.remove('card--picked');
+						card2.classList.remove('card--picked');
+						card1.classList.remove('card--guessed'); // Remove guessed class
+						card2.classList.remove('card--guessed'); // Remove guessed class
+					}, 1000);
+					
+					// Decrement the step counter
+					counter -= 1;
+					available.innerHTML = counter;
+
+					// Check if the player has no more steps left
+					if (counter === 0) {
+						lose();
+					}
+				}
+			}
+
+			// Validate if already won
+			const isWin = cardContainer.querySelectorAll('.card--guessed').length === currentCards.length;
+			if (isWin) {
+				win();
+			}
+		}
+		
+		function win() {
+			isPaused = true;
+			modalTitle.innerHTML = 'Συγχαρητήρια! Κερδίσατε!';
+			modal.classList.add('modal--open');
+
+			// Show the second button when the user wins
+			const secondButton = document.getElementById('secondButton');
+			secondButton.style.display = 'block';
+		}
+
+		function lose() {
+			isLose = true;
+			modalTitle.innerHTML = 'Δυστυχώς χάσατε...';
+			modal.classList.add('modal--open');
+		}
+
+        function drawCards() {
+			cardContainer.innerHTML = '';
+			available.innerHTML = counter;
+
+			shuffle(currentCards).forEach((el) => {
+				const card = document.createElement('div');
+				card.className = 'card';
+				card.setAttribute('data-id', el.id);
+				card.setAttribute('data-name', el.name); // Add a data-name attribute
+				card.innerHTML = `
+					<div class="card__front">
+						<img
+							class="front__img"
+							src="${el.img}"
+							alt="${el.name}"
+						/>
+						<h6 class="card__name">${el.name}</h6>
+					</div>
+					<div class="card__back">
+						<img class="back__img" src="./generalAssets/small_logo_blue_black.png" alt="DigiFlora Logo"/>
+					</div>`;
+				card.addEventListener('click', handleClick);
+				cardContainer.appendChild(card);
+			});
+		}
+
+        document.querySelector('#play-again').addEventListener('click', function () {
+			modal.classList.remove('modal--open');
+			isPaused = false;
+			isLose = false;
+			counter = CARDS.length + 12;
+			drawCards();
+		});
+		
+		function showInfoModal(cardName) {
+			const infoModal = document.getElementById('infoModal');
+			const infoTitle = document.getElementById('imageInfoTitle');
+			const infoText = document.getElementById('imageInfoText');
+
+			// Find the image info for the matched card
+			const matchedCard = IMAGE_INFO.find((info) => info.title === cardName);
+
+			if (matchedCard) {
+				infoTitle.textContent = 'Το βρήκες!';
+				infoText.innerHTML = `<strong>${matchedCard.title}</strong>:<br><br> ${matchedCard.text}`;
+				infoModal.style.display = 'block';
+
+				// Add a class to the matched cards to keep them open
+				const matchedCards = document.querySelectorAll('.card--picked');
+				matchedCards.forEach((card) => card.classList.add('card--guessed'));
+			}
+		}
+
+        drawCards();
+
+        // Close the image information modal
+        const closeInfoModalButton = document.getElementById('closeInfoModalButton');
+        const infoModal = document.getElementById('infoModal');
+
+        closeInfoModalButton.addEventListener('click', () => {
+            infoModal.style.display = 'none';
+        });
+
+        // Close the modal when the close button is clicked
+        const closeModalButton = document.querySelector('.modal .button');
+        closeModalButton.addEventListener('click', () => {
+            modal.classList.remove('modal--open');
+        });
+
+        // Close the modal when the user clicks outside of it
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('modal--open');
+            }
+        });
+    </script>
+</body>
+
+</html>
