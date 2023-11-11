@@ -1,0 +1,524 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Παιχνίδι Σύνθεσης: Πικροδάφνη</title>
+	<link rel="icon" type="image/x-icon" href="./generalAssets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Patrick+Hand|Poppins:400,700" rel="stylesheet">
+ 
+    <style>
+		header {
+			background-color: #9BC4B9; /* Green header background */
+			padding: 20px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		header {
+			background-color: #9BC4B9; /* Green header background */
+			padding: 5px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.logo {
+			width: 80px !important;;
+			height: 80px !important;; /* Add a height to maintain the aspect ratio */
+			margin-bottom: 5px;
+		}
+
+		h1 {
+			font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+			font-size: 36px;
+			color: #F5F6AF; /* Yellow heading text color */
+		}
+	
+	
+        #collage hr {
+            border: none;
+            border-top: 2px solid #3ca731;
+            height: 1px;
+        }
+
+        #collage #playPanel {
+            background-color: #F9EFE6; /* Light pink background */
+            padding: 10px 0px;
+            margin: 10px auto;
+            max-width: 800px;
+            width: 95%;
+			color: #104010;
+        }
+
+        #collage #actualImageBox {
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 10px;
+            vertical-align: top;
+            width: 280px;
+        }
+
+        #collage #stepBox,
+        #collage #timeBox {
+            display: inline-block;
+            width: 48%;
+        }
+
+        #collage #stepBox div {
+            background-color: #F9EFE6; /* Yellow background */
+            display: inline-block;
+            padding: 1px 4px;
+            margin: 0px auto;
+            max-width: 800px;
+        }
+
+        #collage img#actualImage {
+            border: 2px solid #3ca731; /* Dark green border */
+            height: 280px;
+            width: 280px;
+        }
+
+        #collage #sortable {
+            border: 2px solid #3ca731; /* Dark green border */
+            list-style-type: none;
+            display: inline-block;
+            margin: 10px;
+            padding: 0;
+            width: 400px;
+        }
+
+        #collage #sortable li {
+            background-size: 400% 400%;
+            border: none;
+            cursor: pointer;
+            margin: 0;
+            padding: 0;
+            float: left;
+            width: 100px;
+            height: 100px;
+        }
+
+        #collage button {
+            background-color: #9BC4B9; /* Green button background */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Poppins', sans-serif, Arial, sans-serif;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        #collage button:hover {
+            background-color: #F5F6AF; /* Darker yellow on hover */
+			color: black;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif, Arial, sans-serif;
+			text-align: center;
+			background-color: #FFFFFF; /* Light green background */
+        }
+
+        h2 {
+			font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+			font-size: 24px;
+			color: #9BC4B9; /* Green color for title */
+            font-weight: normal;
+            text-align: center;
+        }
+
+        h3 {
+			font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+            margin: 3px 0px;
+            text-align: center;
+			color: #000000;
+			font-size: 24px;
+        }
+		
+		/* Modal styles */
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+		}
+
+		.modal-content {
+			background-color: #F9EFE6;
+			margin: 15% auto;
+			padding: 20px;
+			border: 1px solid #3ca731; /* Dark green border */
+			border-radius: 5px;
+			max-width: 80%;
+			text-align: center;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+		}
+
+		.close {
+			color: #F44350; /* Dark green color */
+			float: right;
+			font-size: 24px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.close:hover {
+			color: #ea414c; /* Darker green color on hover */
+		}
+
+		p {
+			font-family: 'Poppins', sans-serif, Arial, sans-serif; /* Use the same playful font */
+			font-size: 18px;
+			color: #333; /* Dark gray color for text */
+		}
+
+		.close-button {
+			background-color: #3ca731; /* Dark green button background */
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			font-family: 'Poppins', sans-serif, Arial, sans-serif; /* Use the same playful font */
+			font-size: 18px;
+			cursor: pointer;
+			border-radius: 5px;
+			transition: background-color 0.3s;
+			margin-top: 20px;
+		}
+
+		.close-button:hover {
+			background-color: #ea414c; /* Darker green color on hover */
+		}
+		
+		/* Add playful styles to radio buttons */
+		input[type="radio"] {
+			display: none; /* Hide the default radio button */
+		}
+
+		input[type="radio"] + label {
+			font-family: 'Poppins', sans-serif, Arial, sans-serif;
+			font-size: 18px;
+			color: #9BC4B9; /* Dark green color for label text */
+			cursor: pointer;
+		margin-right: 5px; /* Add spacing between radio buttons */
+		}
+
+		/* Customize the radio button's appearance when not selected */
+		input[type="radio"] + label:before {
+			content: '\2714'; /* Unicode checkmark symbol */
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			margin-right: 5px;
+			text-align: center;
+			line-height: 20px;
+			background-color: #F9EFE6; /* Light pink background */
+			border: 2px solid #3ca731; /* Dark green border */
+			border-radius: 50%; /* Make it a circle */
+		}
+
+		/* Customize the radio button's appearance when selected */
+		input[type="radio"]:checked + label:before {
+			background-color: #3ca731; /* Dark green background for selected radio button */
+			color: white; /* White checkmark color for selected radio button */
+		}
+
+		/* Add this CSS to ensure the radio button labels are on the same line */
+		input[type="radio"] + label {
+			display: inline-block;
+			margin-right: 10px; /* Add spacing between radio buttons and labels */
+		}
+
+    </style>
+</head>
+
+<body>
+	<header>
+		<img class="logo" src="./generalAssets/small_logo_yellow_black.png" alt="DigiFlora Logo" /> <!-- Add your logo path -->
+
+		<h1>Παζλ με την Πικροδάφνη</h1>
+	</header>
+    <div id="collage">
+        <div id="playPanel" style="padding:5px;display:none;">
+            <!--<h3 id="imgTitle"></h3>
+            <hr />-->
+            <div style="display:inline-block; margin:auto; width:95%; vertical-align:top;">
+                <ul id="sortable" class="sortable"></ul>
+                <div id="actualImageBox">
+                    <div id="stepBox">
+                        <div>Βήματα:</div>
+                        <div class="stepCount">0</div>
+                    </div>
+                    <div id="timeBox">
+                        Χρόνος: <span id="timerPanel"></span> δευτ.
+                    </div>
+                    <img id="actualImage" />
+                    <div>ΛΥΣΗ</div>
+                    <p id="levelPanel">
+                        <!-- Add unique IDs to the radio buttons -->
+						<input type="radio" name="level" id="easyRadio" checked="checked" value="3" />
+						<label for="easyRadio">Εύκολο</label>
+						<input type="radio" name="level" id="mediumRadio" value="4" />
+						<label for="mediumRadio">Μέτριο</label>
+						<input type="radio" name="level" id="hardRadio" value="5" />
+						<label for="hardRadio">Δύσκολο</label>
+                    </p>
+                    
+                </div>
+            </div>
+        </div>
+		<div>
+			<button id="btnRule" type="button" class="btn" onclick="showRules();">Κανόνες</button>
+		</div>
+        <div id="gameOver" style="display:none;">
+            <div
+                style="background-color: #fff; padding: 5px 10px 20px 10px; text-align: center; color: #2d393e;">
+                <h2 style="text-align:center">Τα καταφέρατε!!</h2>
+                Συγχαρητήρια!! <br /> Ολοκληρώσατε την εικόνα με επιτυχία.
+                <br /> Βήματα: <span class="stepCountGameOver">0</span>.
+                <br /> Χρόνος: <span class="timeCount">0</span> δευτ.<br /><br />
+                <div>
+                    <button type="button" onclick="window.location.reload(true);">Παίξτε Ξανά</button>
+                </div>
+                <br />
+                <div>
+                    <button type="button" onclick="window.location.href='pikrodafni2.html';">Επόμενο...</button>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div id="myModal" class="modal">
+			<div class="modal-content">
+				<h3>Κανόνες Παιχνιδιού</h3>
+				<p>
+					Τακτοποιήστε τα μέρη της φωτογραφίας με τρόπο που να σχηματίζεται σωστά η εικόνα.<br>
+					Για να αλλάξετε τη θέση από κάποιο πλακίδιο, θα πρέπει να το σύρετε με το ποντίκι σας στην επιθυμητή θέση.<br>	
+					Σε περίπτωση που χρησιμοποιείτε οθόνη αφής, τότε η εναλλαγή πραγματοποιείται πατώντας επάνω στα δύο πλακίδια που θέλετε να ανταλλάξετε θέση.<br>										
+					Εάν θέλετε, μπορείτε να αλλάξετε τη δυσκολία επιλέγοντας το αντίστοιχο επίπεδο από τις διαθέσιμες επιλογές.<br>
+					Ο αριθμός των βημάτων που έγιναν και ο χρόνος ολοκλήρωσης θα μετρηθούν.<br>
+					Καλή επιτυχία!
+				</p>
+				<!-- Add a close button here -->
+				<button class="close-button" onclick="closeModal()">Κλείσιμο</button>
+			</div>
+		</div>
+    </div>
+	
+   <script>
+		var images = [
+		{ src: './assets/images/pikrodafni.jpg', title: 'Πικροδάφνη' }
+	];
+	
+	// Add event listeners to the radio buttons
+    document.getElementById("easyRadio").addEventListener("change", function() {
+        changeDifficulty(this.value);
+    });
+
+    document.getElementById("mediumRadio").addEventListener("change", function() {
+        changeDifficulty(this.value);
+    });
+
+    document.getElementById("hardRadio").addEventListener("change", function() {
+        changeDifficulty(this.value);
+    });
+
+    // Function to change the difficulty level
+    function changeDifficulty(gridSize) {
+        stepCount = 0; // Reset step count
+        document.querySelector('.stepCount').textContent = stepCount; // Update step count display
+        imagePuzzle.startGame(images, gridSize);
+    }
+
+	// showRules() function
+	function showRules() {
+		var modal = document.getElementById("myModal");
+		modal.style.display = "block";
+
+		// Add an event listener to close the modal when the "Κλείσιμο" button is clicked
+		var closeButton = document.querySelector('.close-button');
+		closeButton.addEventListener('click', closeModal);
+	}
+
+	// closeModal() function
+	function closeModal() {
+		var modal = document.getElementById("myModal");
+		modal.style.display = "none";
+	}
+
+		var stepCount = 0; // Initialize step count
+
+		window.onload = function () {
+			var gridSize = document.querySelector('#levelPanel input[type="radio"]:checked').getAttribute('value');
+			imagePuzzle.startGame(images, gridSize);
+		};
+
+	function restart() {
+		stepCount = 0; // Reset step count
+		document.querySelector('.stepCount').textContent = stepCount; // Update step count display
+		var gridSize = document.querySelector('#levelPanel input[type="radio"]:checked').getAttribute('value');
+		imagePuzzle.startGame(images, gridSize);
+	}
+
+	// Add this function to increment the step count when a puzzle piece is moved
+	function incrementStepCount() {
+		stepCount++;
+		document.querySelector('.stepCount').textContent = stepCount;
+	}
+
+	function rules() {
+		alert('Τακτοποιήστε τα μέρη της φωτογραφίας με τρόπο που να σχηματίζεται σωστά η εικόνα.\nΟ αριθμός των βημάτων που έγιναν θα μετρηθεί.');
+	}
+
+	var timerFunction;
+
+	var imagePuzzle = {
+		stepCount: 0,
+		startTime: new Date().getTime(),
+		startGame: function (images, gridSize) {
+			this.setImage(images, gridSize);
+			helper.doc('playPanel').style.display = 'block';
+			helper.shuffle('sortable');
+			this.stepCount = 0;
+			this.startTime = new Date().getTime();
+			this.tick();
+		},
+		tick: function () {
+			var now = new Date().getTime();
+			var elapsedTime = parseInt((now - imagePuzzle.startTime) / 1000, 10);
+			helper.doc('timerPanel').textContent = elapsedTime;
+			timerFunction = setTimeout(imagePuzzle.tick, 1000);
+		},
+		setImage: function (images, gridSize = 4) {
+			var percentage = 100 / (gridSize - 1);
+			var image = images[Math.floor(Math.random() * images.length)];
+			helper.doc('imgTitle').innerHTML = image.title;
+			helper.doc('actualImage').setAttribute('src', image.src);
+			helper.doc('sortable').innerHTML = '';
+			for (var i = 0; i < gridSize * gridSize; i++) {
+				var xpos = (percentage * (i % gridSize)) + '%';
+				var ypos = (percentage * Math.floor(i / gridSize)) + '%';
+
+				let li = document.createElement('li');
+				li.id = i;
+				li.setAttribute('data-value', i);
+				li.style.backgroundImage = 'url(' + image.src + ')';
+				li.style.backgroundSize = (gridSize * 100) + '%';
+				li.style.backgroundPosition = xpos + ' ' + ypos;
+				li.style.width = 400 / gridSize + 'px';
+				li.style.height = 400 / gridSize + 'px';
+
+				li.setAttribute('draggable', 'true');
+				li.ondragstart = (event) => event.dataTransfer.setData('data', event.target.id);
+				li.ondragover = (event) => event.preventDefault();
+				li.ondrop = (event) => {
+					let origin = helper.doc(event.dataTransfer.getData('data'));
+					let dest = helper.doc(event.target.id);
+					let p = dest.parentNode;
+
+					if (origin && dest && p) {
+						let temp = dest.nextSibling;
+						p.insertBefore(dest, origin);
+						p.insertBefore(origin, temp);
+
+						let vals = Array.from(helper.doc('sortable').children).map(x => x.id);
+						var now = new Date().getTime();
+						//document.querySelectorAll('.stepCount').textContent = ++imagePuzzle.stepCount;
+						incrementStepCount();
+						document.querySelector('.timeCount').textContent = (parseInt((now - imagePuzzle.startTime) / 1000, 10));
+
+						if (isSorted(vals)) {
+							// Update the step count in the gameOver section
+							const stepCountGameOver = document.querySelector('.stepCountGameOver');
+							if (stepCountGameOver) {
+								stepCountGameOver.textContent = stepCount;
+							}
+							// Display the game over section
+							helper.doc('actualImageBox').innerHTML = helper.doc('gameOver').innerHTML;
+						}
+					}
+				};
+				li.setAttribute('dragstart', 'true');
+				helper.doc('sortable').appendChild(li);
+			}
+			helper.shuffle('sortable');
+		}
+	};
+
+	isSorted = (arr) => arr.every((elem, index) => { return elem == index; });
+
+	var helper = {
+		doc: (id) => document.getElementById(id) || document.createElement("div"),
+
+		shuffle: (id) => {
+			var ul = document.getElementById(id);
+			for (var i = ul.children.length; i >= 0; i--) {
+				ul.appendChild(ul.children[Math.random() * i | 0]);
+			}
+		}
+	}
+
+	    // Add touch event listeners to the puzzle pieces
+    var puzzlePieces = document.querySelectorAll('#sortable li');
+    var selectedPieces = [];
+
+    document.getElementById('sortable').addEventListener('touchstart', function (event) {
+        var target = event.target;
+        if (target && target.tagName === 'LI') {
+            selectedPieces.push(target);
+
+            if (selectedPieces.length === 2) {
+                swapPieces(selectedPieces[0], selectedPieces[1]);
+                selectedPieces = [];
+            }
+
+            event.preventDefault();
+        }
+    });
+
+    function swapPieces(piece1, piece2) {
+    var parent = piece1.parentNode;
+    var nextSibling1 = piece1.nextSibling;
+    var nextSibling2 = piece2.nextSibling;
+
+    parent.insertBefore(piece1, nextSibling2);
+    parent.insertBefore(piece2, nextSibling1);
+
+    incrementStepCount();
+
+    // Check for completion condition after each swap
+    var vals = Array.from(helper.doc('sortable').children).map(x => x.id);
+    if (isSorted(vals)) {
+        // Update the step count in the gameOver section
+        const stepCountGameOver = document.querySelector('.stepCountGameOver');
+        if (stepCountGameOver) {
+            stepCountGameOver.textContent = stepCount;
+        }
+
+        // Calculate elapsed time
+        var now = new Date().getTime();
+        var elapsedTime = parseInt((now - imagePuzzle.startTime) / 1000, 10);
+
+        // Display the elapsed time in the success message
+        document.querySelector('.timeCount').textContent = elapsedTime;
+
+        // Display the game over section
+        helper.doc('actualImageBox').innerHTML = helper.doc('gameOver').innerHTML;
+    }
+}
+	</script>
+</body>
+
+</html>
