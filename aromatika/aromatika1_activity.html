@@ -1,0 +1,487 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="icon" type="image/x-icon" href="./generalAssets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Patrick+Hand|Poppins:400,700" rel="stylesheet">
+    <style>	
+    body {
+    font-family: 'Comic Sans MS', cursive, sans-serif, Arial, sans-serif;
+    text-align: center;
+    background-color: #FFFFFF; /* Light green background */
+	}
+
+	header {
+		background-color: #9BC4B9; /* Green header background */
+		padding: 5px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.logo {
+		width: 80px !important;;
+		height: 80px !important;; /* Add a height to maintain the aspect ratio */
+		margin-bottom: 5px;
+	}
+
+	h1 {
+		font-family: 'Patrick Hand', cursive, Arial, sans-serif;
+		font-size: 36px;
+		color: #F5F6AF; /* Yellow heading text color */
+	}
+
+	#word-search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    max-width: 100%; /* Ensure it doesn't exceed the screen width */
+    padding: 10px; /* Add padding to create space */
+    box-sizing: border-box; /* Include padding and border in the width */
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    #word-search-container {
+        margin-top: 10px; /* Reduce top margin on smaller screens */
+    }
+}
+	
+	#word-list-container {
+		background-color: #F9EFE6; /* Pink background */
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	}
+
+#word-search-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 40px); /* Fixed 14 columns with default cell width */
+    gap: 2px;
+    border: 2px solid #F5F6AF; /* Teal border */
+    padding: 5px;
+    margin-bottom: 20px;
+    background-color: #9BC4B9; /* Light mint background */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Light shadow */
+    max-width: 100%; /* Ensure the grid doesn't exceed the screen width */
+	
+}
+
+.cell {
+    width: 40px; /* Fixed cell width */
+    height: 40px; /* Fixed cell height */
+    text-align: center;
+    background-color: #FFFFF0; /* Ivory cell background */
+    cursor: pointer;
+    font-size: 20px; /* Fixed font size */
+    user-select: none;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    #word-search-grid {
+        grid-template-columns: repeat(12, minmax(20px, 1fr)); /* Reduce cell width for smaller screens */
+    }
+    .cell {
+        width: auto; /* Allow cells to adjust width based on available space */
+        height: auto; /* Allow cells to adjust height based on available space */
+        font-size: 12px; /* Adjust font size for smaller screens */
+    }
+}
+
+	.selected {
+		background-color: #F5F6AF; /* Gold when selected */
+	}
+
+	.found {
+		background-color: #32CD32; /* Green when found */
+	}
+
+	#word-list {
+		font-size: 18px;
+		font-weight: bold;
+		margin-bottom: 10px;
+		color: #9BC4B9; /* Teal color for the word list */
+	}
+
+	button {
+		font-size: 16px;
+		padding: 10px 20px;
+		background-color: #9BC4B9; /* Greenish button */
+		color: white;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		transition: background-color 0.2s ease-in-out;
+	}
+
+	button:hover {
+		background-color: #F5F6AF; /* Lighter red on hover */
+		color: black;
+	}
+
+	#success-message {
+		display: none;
+		margin-top: 20px;
+		background-color: #F9EFE6; /* Green success message */
+		color: black;
+		padding: 10px;
+		border-radius: 5px;
+		font-size: 18px;
+	}
+
+        /* Style for the modal container */
+        .modal-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 1;
+        }
+
+        /* Style for the modal content */
+        .modal-content {
+            background-color: #F9EFE6; /* Light mint background */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Light shadow */
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            max-width: 80%;
+        }
+
+        /* Style for the close button in the modal */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #FF6B6B; /* Reddish color */
+        }
+    </style>
+    <title>Αρωματικά: Κρυπτόλεξο</title>
+</head>
+<body>
+	<header>
+		<img class="logo" src="./generalAssets/small_logo_yellow_black.png" alt="DigiFlora Logo" /> <!-- Add your logo path -->
+
+		<h1>Κρυπτόλεξο</h1>
+	</header>
+	<div id="success-message">
+        <p>Συγχαρητήρια! Βρήκατε όλες τις κρυμμένες λέξεις!</p>
+		<button id="new-game-button">Παίξτε ξανά</button>
+        <a href="aromatika2.html"><button>Επόμενο...</button></a>
+    </div>
+    <div id="word-search-container">
+        <div id="word-search-grid"></div>
+		<p>Η ρίγανη, το φασκόμηλο και το βαλσαμόχορτο, κρυφτήκαμε μέσα στο κρυπτόλεξο.<br>
+		Μπορείς να μας βρεις;</p>
+        <div id="word-list-container">
+			<div id="word-list"></div>
+		</div>
+    </div><br>
+    <button id="new-game-button-2" onclick="restartGame()">Νέο Παιχνίδι</button>
+    <button id="show-solution-button">Λύση</button>
+    <button id="show-rules-button">Κανόνες</button> <!-- New Rules Button -->
+    
+    <!-- Modal Container -->
+	<div id="rules-modal" class="modal-container">
+		<!-- Modal Content -->
+		<div class="modal-content">
+			<h2>Κανόνες Παιχνιδιού</h2>
+			<p>Βρείτε τις κρυμμένες λέξεις επιλέγοντας γράμματα με τη σειρά, είτε οριζόντια είτε κάθετα.<br>
+			Όταν βρείτε μια λέξη, θα τονιστεί και θα αφαιρεθεί από τη λίστα.<br>
+			Όταν κάνετε λάθος, τα επιλεγμένα γράμματα επανέρχονται στην αρχική τους μορφή.</p>
+			<p>Κάντε κλικ στο "Νέο Παιχνίδι" για να ξεκινήσετε ένα νέο παιχνίδι ή κάντε κλικ στο "Λύση" για εμφάνιση της λύσης.</p>
+			<!-- Close Button Inside the Modal -->
+			<button id="close-rules-modal">Συνέχεια</button>
+		</div>
+	</div>
+    <script>
+        // List of Greek words related to nature
+        let words = ["ΡΙΓΑΝΗ", "ΦΑΣΚΟΜΗΛΟ", "ΒΑΛΣΑΜΟΧΟΡΤΟ"];
+		
+		function restartGame() {
+			location.reload(); // Reload the page
+		}
+
+        // Function to generate a 12x12 Greek word search grid
+        function generateWordSearchGrid() {
+            const gridSize = 12;
+            const alphabet = "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ";
+            const grid = new Array(gridSize).fill("").map(() => new Array(gridSize).fill(""));
+
+            // Place words in the grid
+            for (const word of words) {
+                let placed = false;
+
+                while (!placed) {
+                    const row = Math.floor(Math.random() * gridSize);
+                    const col = Math.floor(Math.random() * gridSize);
+                    const direction = Math.random() < 0.5 ? "horizontal" : "vertical";
+
+                    if (canPlaceWord(grid, word, row, col, direction)) {
+                        placeWord(grid, word, row, col, direction);
+                        placed = true;
+                    }
+                }
+            }
+
+            // Fill empty cells with random letters
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize; col++) {
+                    if (grid[row][col] === "") {
+                        const randomLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
+                        grid[row][col] = randomLetter;
+                    }
+                }
+            }
+
+            return grid;
+        }
+
+        // Function to check if a word can be placed in the grid at the specified position and direction
+        function canPlaceWord(grid, word, row, col, direction) {
+            if (direction === "horizontal" && col + word.length <= grid[row].length) {
+                for (let i = 0; i < word.length; i++) {
+                    if (grid[row][col + i] !== "" && grid[row][col + i] !== word[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            } else if (direction === "vertical" && row + word.length <= grid.length) {
+                for (let i = 0; i < word.length; i++) {
+                    if (grid[row + i][col] !== "" && grid[row + i][col] !== word[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        // Function to place a word in the grid at the specified position and direction
+        function placeWord(grid, word, row, col, direction) {
+            if (direction === "horizontal") {
+                for (let i = 0; i < word.length; i++) {
+                    grid[row][col + i] = word[i];
+                }
+            } else if (direction === "vertical") {
+                for (let i = 0; i < word.length; i++) {
+                    grid[row + i][col] = word[i];
+                }
+            }
+        }
+
+        // Function to display the Greek word search grid on the webpage
+        function displayWordSearch(grid) {
+            const gridContainer = document.getElementById("word-search-grid");
+            gridContainer.innerHTML = "";
+
+            for (let row = 0; row < grid.length; row++) {
+                for (let col = 0; col < grid[row].length; col++) {
+                    const cell = document.createElement("div");
+                    cell.textContent = grid[row][col];
+                    cell.classList.add("cell");
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+                    gridContainer.appendChild(cell);
+                }
+            }
+        }
+
+        // Function to display the list of Greek words to find
+        function displayWordList() {
+            const wordListContainer = document.getElementById("word-list");
+            wordListContainer.innerHTML = "Κρυμμένες λέξεις που απομένουν να βρείτε:<br> " + words.join(", ");
+        }
+
+        // Function to check if the selected letters form a word
+		function checkWord(selectedCells) {
+			const selectedWord = selectedCells.map(cell => cell.textContent).join("");
+
+			if (words.includes(selectedWord)) {
+				// Found a word
+				for (const cell of selectedCells) {
+					cell.classList.remove("selected");
+					cell.classList.add("found");
+				}
+
+				// Remove the found word from the list
+				words.splice(words.indexOf(selectedWord), 1);
+				displayWordList();
+
+				// Check if all words have been found
+				if (words.length === 0) {
+					const successMessage = document.getElementById("success-message");
+					successMessage.style.display = "block";
+				}
+			} else {
+				// Not a valid word, so reset the selected cells
+				for (const cell of selectedCells) {
+					cell.classList.remove("selected");
+				}
+			}
+		}
+
+        // Function to start a new game by generating a new grid and words
+        function newGame() {
+            words = ["ΡΙΓΑΝΗ", "ΦΑΣΚΟΜΗΛΟ", "ΒΑΛΣΑΜΟΧΟΡΤΟ"];
+            const grid = generateWordSearchGrid();
+            displayWordSearch(grid);
+            displayWordList();
+            
+            const gridCells = document.querySelectorAll(".cell");
+            let isMouseDown = false;
+            let selectedCells = [];
+
+            gridCells.forEach((cell) => {
+            cell.classList.remove("selected");
+            cell.classList.remove("found");
+
+            let isPointerDown = false;
+            let selectedCells = [];
+
+            // Function to handle both touch and mouse events
+            function handlePointerDown(event) {
+                event.preventDefault();
+                isPointerDown = true;
+                selectedCells = [cell];
+                cell.classList.toggle("selected");
+
+                const pointerMoveEvent = event.type === "mousedown" ? "mousemove" : "touchmove";
+                const pointerUpEvent = event.type === "mousedown" ? "mouseup" : "touchend";
+
+                // Add event listeners for move and up events
+                document.addEventListener(pointerMoveEvent, handlePointerMove);
+                document.addEventListener(pointerUpEvent, handlePointerUp);
+            }
+
+            // Function to handle pointer move events
+            function handlePointerMove(event) {
+                if (isPointerDown && selectedCells.length > 0) {
+                    const pointerX = event.type === "mousemove" ? event.clientX : event.touches[0].clientX;
+                    const pointerY = event.type === "mousemove" ? event.clientY : event.touches[0].clientY;
+                    const element = document.elementFromPoint(pointerX, pointerY);
+
+                    if (element && element.classList.contains("cell")) {
+                        const touchedCell = element;
+                        if (touchedCell !== selectedCells[selectedCells.length - 1]) {
+                            touchedCell.classList.toggle("selected");
+                            selectedCells.push(touchedCell);
+                        }
+                    }
+                }
+            }
+
+            // Function to handle pointer up events
+            function handlePointerUp(event) {
+                if (selectedCells.length === 1) {
+                    // Reset the color of the clicked cell to ivory
+                    selectedCells[0].classList.remove("selected");
+                } else if (selectedCells.length > 1) {
+                    checkWord(selectedCells);
+                }
+                isPointerDown = false;
+                selectedCells = [];
+
+                // Remove event listeners for move and up events
+                const pointerMoveEvent = event.type === "mouseup" ? "mousemove" : "touchmove";
+                const pointerUpEvent = event.type === "mouseup" ? "mouseup" : "touchend";
+                document.removeEventListener(pointerMoveEvent, handlePointerMove);
+                document.removeEventListener(pointerUpEvent, handlePointerUp);
+            }
+
+            // Add unified pointer down event listener
+            cell.addEventListener("mousedown", handlePointerDown);
+            cell.addEventListener("touchstart", handlePointerDown);
+        });
+
+            // Hide the success message when starting a new game
+            const successMessage = document.getElementById("success-message");
+            successMessage.style.display = "none";
+        }
+
+        // Function to reveal the solution by marking all words as found
+        function showSolution() {
+            const gridCells = document.querySelectorAll(".cell");
+            for (const word of words) {
+                const foundCells = [];
+                for (const cell of gridCells) {
+                    if (cell.textContent === word[0]) {
+                        const direction = ["horizontal", "vertical"];
+                        for (const dir of direction) {
+                            const [dx, dy] = dir === "horizontal" ? [1, 0] : [0, 1];
+                            let isMatch = true;
+                            let x = parseInt(cell.dataset.col);
+                            let y = parseInt(cell.dataset.row);
+                            for (let i = 1; i < word.length; i++) {
+                                x = x + dx;
+                                y = y + dy;
+                                const nextCell = document.querySelector(`[data-row="${y}"][data-col="${x}"]`);
+                                if (!nextCell || nextCell.textContent !== word[i]) {
+                                    isMatch = false;
+                                    break;
+                                }
+                            }
+                            if (isMatch) {
+                                for (let i = 0; i < word.length; i++) {
+                                    const foundCell = document.querySelector(`[data-row="${y}"][data-col="${x}"]`);
+                                    foundCells.push(foundCell);
+                                    x = x - dx;
+                                    y = y - dy;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (foundCells.length === word.length) {
+                    for (const cell of foundCells) {
+                        cell.classList.remove("selected");
+                        cell.classList.add("found");
+                    }
+                }
+            }
+        }
+
+        // Add event listener to the "New Game" button
+        const newGameButton = document.getElementById("new-game-button");
+        newGameButton.addEventListener("click", newGame);
+
+        // Add event listener to the "Show Solution" button
+        const showSolutionButton = document.getElementById("show-solution-button");
+        showSolutionButton.addEventListener("click", showSolution);
+
+        // Initialize the game when the page loads
+        newGame();
+		
+		// Open Rules Modal
+		const rulesButton = document.getElementById("show-rules-button");
+		const rulesModal = document.getElementById("rules-modal");
+		const closeRulesModal = document.getElementById("close-rules-modal");
+
+		rulesButton.addEventListener("click", () => {
+			rulesModal.style.display = "flex"; // Show the modal container
+		});
+
+		closeRulesModal.addEventListener("click", () => {
+			rulesModal.style.display = "none"; // Hide the modal container
+		});
+    </script>
+</body>
+</html>
